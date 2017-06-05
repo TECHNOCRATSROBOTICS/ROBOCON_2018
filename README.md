@@ -8,3 +8,7 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
    1. Computer_Science
    2. Electrical
    3. Mechanical
+   4. Idea_list 
+   5. Designs
+   6. Documentation
+   
