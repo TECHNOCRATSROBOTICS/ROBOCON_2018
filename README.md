@@ -7,8 +7,8 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
 1. ROBOCON_2018 (Respository Name)
    * Computer Science 
    * Designs
-   * Idea_list
    * Electrical
+   * Idea List
    * Management 
    * Mechanical
    * Semeseter Holidays Task List
