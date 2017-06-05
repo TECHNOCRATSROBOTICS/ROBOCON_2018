@@ -11,7 +11,7 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
    * Computer_Science
    * Idea_list 
    * Designs
-   * Semeseter Holiday Task List
+   * Semeseter Holidays Task List
        - CSE 
        - EEE & ECE
        - MECH
