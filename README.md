@@ -14,5 +14,6 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
    * Semeseter Holidays Task List
        - CSE 
        - EEE & ECE
+       - MANAGEMENT
        - MECH
    
