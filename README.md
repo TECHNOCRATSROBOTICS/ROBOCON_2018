@@ -2,7 +2,7 @@
 
 Use this respository only for uploading codes, documentation, desgins and ideas for **Robocon 2018** purpose. 
 
-## Hierarchy of files
+## Hierarchy of Folders
 
 1. ROBOCON_2018 (Respository Name)
    * Computer Science 
