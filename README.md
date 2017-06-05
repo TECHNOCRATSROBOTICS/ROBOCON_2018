@@ -12,7 +12,7 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
    * Idea_list 
    * Designs
    * Semeseter Holiday Task List
-       . CSE 
-       . EEE & ECE
-       . MECH
+       - CSE 
+       - EEE & ECE
+       - MECH
    
