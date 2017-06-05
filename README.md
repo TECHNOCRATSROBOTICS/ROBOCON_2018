@@ -11,5 +11,8 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
    * Mechanical
    * Idea_list 
    * Designs
-   * Documentation
+   * Semeseter Holiday Task List
+       . CSE 
+       . EEE & ECE
+       . MECH
    
