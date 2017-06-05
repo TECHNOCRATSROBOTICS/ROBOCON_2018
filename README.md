@@ -5,12 +5,12 @@ Use this respository only for uploading codes, documentation, desgins and ideas 
 ## Hierarchy of files
 
 1. ROBOCON_2018 (Respository Name)
+   * Computer Science 
+   * Designs
+   * Idea_list
+   * Electrical
    * Management 
    * Mechanical
-   * Electrical
-   * Computer_Science
-   * Idea_list 
-   * Designs
    * Semeseter Holidays Task List
        - CSE 
        - EEE & ECE
