@@ -1,4 +1,4 @@
-//hash atbles in C. Same thing as dictionary in python
+//hash atbles in C
 //faster search if key is known
 #include<stdio.h>
 #include<stdlib.h>
