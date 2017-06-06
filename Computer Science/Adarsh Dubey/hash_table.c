@@ -86,4 +86,3 @@ printf("No element for given key");
 else
 printf("Data for given key = %d\n",ptr->data);
 }
-//dictionary in python is easier to impliment and use
