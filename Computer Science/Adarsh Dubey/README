@@ -1,12 +1,12 @@
 TASK-1
-##1. Hash-Tables:
+1. Hash-Tables:
 creating hash function , inserting data, searching using keys, deleting entries, printing out values in hash table.
 
-##2. Linked-list:
+2. Linked-list:
 a doublly linked list, functions to insert nodes, delete nodes, and search values.
 
-##3. Stack and Que:
+3. Stack and Que:
 entering data in que and stack and taking outputs.
 
-##4. Binary Search Tree:
+4. Binary Search Tree:
 inserting nodes, deleting nodes, searching data in tree, displaying outputs in inorder, in preorder and in postorder
