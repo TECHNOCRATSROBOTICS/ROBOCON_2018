@@ -1,0 +1,22 @@
+#include<stdio.h>
+int main()
+{
+int i,j,temp,size,numbers[30];
+printf("enter number of elements");
+scanf("%d",&size);
+for(i=0;i<size;i++)
+{
+  for(j=i+1;j<size;j++)
+  {
+  if(number[i]>number[j])
+  { temp=number[i];
+  number[i]=number[j];
+  number[j]=temp;
+  }
+ }
+}
+printf("sorted array")
+for(i=0;i<size;i++);
+printf("%d",number[i]);
+return(0);
+}
