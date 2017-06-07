@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string.h>
+using namespace std;
 
 //Note: Commented portions are for implementing a static Circular Queue
 
