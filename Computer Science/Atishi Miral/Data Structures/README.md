@@ -1,4 +1,4 @@
-###DATA STRUCTURES###
+###DATA STRUCTURES
 -STACKS
   -Follows LIFO
   -Additions are made to the top
