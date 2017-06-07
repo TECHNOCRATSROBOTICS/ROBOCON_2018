@@ -1,0 +1,12 @@
+1. ARRAY - An array is a series of elements of the same type placed in continuous memory locations that can be individually referenced by adding an index to a unique identifier.
+   In this code 5 numbers are inserted in the array and their sum is calculated.
+2. BINARY TREE - Unlike Arrays, Linked Lists, Stack and queues, which are linear data structures, trees are hierarchical data structures.
+   The topmost node is called root of the tree. The elements that are directly under an element are called its children.
+   In this code we are giving different values to the left and right branch of the tree.
+3. LINKED LIST - A linked list is a linear collection of data elements, called nodes pointing to the next nodes by means of pointers.
+   this code includes insertion and deletion of elements from linked lists.
+4. QUEUE - Logically a queue is a FIFO(first in first out) structure and physically it can be implemented either as an array or as a linked lists.
+   Code includes two functions one is for insertion and other is for deletion of elements from queue.
+5. STACK - A stack is a LIFO(last in first out) structure and physically it can be implemented as an array or linked list like queue.
+   This code has two function one for push(insertion of element in stack) operation and other for pop(deletion of elements in stack) operation.
+   
