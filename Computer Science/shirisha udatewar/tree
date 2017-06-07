@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct btnode
+{
+    int value;
+    struct btnode *l;
+    struct btnode *r;
+}*root = NULL;
+
+struct btnode* newnode(int);
+void inorder(struct btnode*);
+
+int main (void){
+
+        root=newnode(50);
+        root->l=newnode(20);
+        root->r=newnode(30);
+        root->l->l=newnode(70);
+        root->l->r=newnode(80);
+        root->l->r->r=newnode(60);
+        root->l->l->l=newnode(10);
+        root->l->l->r=newnode(40);
+
+        printf("tree elements are\n");
+        printf("\nDISPLAYED IN INORDER\n");
+        inorder(root);
+        printf("NULL");
+
+    return 0;
+}
+
+struct btnode* newnode(int value)
+    {
+        struct btnode* node = (struct btnode*)malloc(sizeof(struct btnode));
+
+        node->value = value;
+
+        node->l = NULL;
+        node->r = NULL;
+        return(node);
+    }
+
+void inorder(struct btnode *t)
+{
+
+    if (root == NULL)
+    {
+        printf("No Nodes in a tree to display");
+        return;
+    }
+
+    if (t->l != NULL)
+        inorder(t->l);
+    printf("%d -> ", t->value);
+    if (t->r != NULL)
+        inorder(t->r);
+}
