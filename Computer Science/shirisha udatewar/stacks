@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 50
+ void push();
+ void pop();
+ void display();
+ int main()
+ {
+   int stack[MAX],data,top=-1;
+   int ch;
+   d0
+   {
+     printf("\n1.\tPush\n2.\tPop\n3.\tdisplay\n4.\tEnd\n");
+     scanf("%d", &ch);
+     {
+       case 1:
+         push();
+         break();
+       case 2:
+         pop();
+         break();
+       case 3:
+         display();
+         break();
+       case 4:
+         end(0);
+         default:
+         printf("Invalid");
+     }
+     while(ch!=4);
+     return(0);
+   }
+   void push()
+   { 
+   if(top==MAX-1;
+      printf("stack id full")
+   else
+    {
+      printf("Enter data");
+      scanf("%d",&data);
+      top++;
+      stack[top]=data;
+      printf("data inserted %d",data);
+    }  
+   }
+   void pop()
+   {
+   if(top==-1)
+     printf("stack is empty");
+   else
+   {
+    data=stack[top];
+    top--;
+    printf(" data deleted=%d",data);
+    
+   }
+   }
+   void display()
+   {
+     if(top==-1)
+        printf("stack is empty");
+     else
+        {
+        for(int 1=top;i>=0;i++);
+        printf("%d",stack[i]);
+        
+        }
+   }
+ }
+ 
