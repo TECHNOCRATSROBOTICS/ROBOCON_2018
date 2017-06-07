@@ -1,0 +1,245 @@
+NOTE:  README is included along the code
+
+
+
+1)array
+
+#include<iostream.h>
+#include<conio.h>
+
+void main()
+{
+	int array[20];
+	int n; //size of array
+
+//accept elements
+	
+	for(int i=0;i<n;i++)
+	cin>>array[i];
+	
+//search elements  and occurrrennce
+	int key;,count=0;
+	cin>>key;
+	for(i=0;i<n;i++)
+	{
+		if(array[i]==key)
+		count++;
+	}
+	if(count==0)
+	cout<<"Not found";
+	else
+	cout<<"Found<<count<<"times";
+
+//Insert 
+
+ 	int new,index;       //new element and its index position
+	cin>>new;
+	for(i=n;i>=index;i--)
+	{
+		array[i+1]=array[i];   //shift elements forard and create empty space at index
+	}
+	array[index]=new;     //fill the empty space with new element
+        n++;      update value of n
+
+//   Delete
+
+        int delpos;   //index of element to be deleted
+        cin>>delpos;
+	for(i=delpos+1;i<=n;i++)
+	array[i-1]=array[i]         //  thus element to be deleted is overwritten by its next element
+
+	
+
+
+
+2)LINKED LIST
+
+
+//They can be implemented using pointers and structures consisting of a data element and one address element
+//The address element of one node points to data eleement of the next
+
+//  Create nodes
+
+	
+#include<iostream.h>
+#include<conio.h>
+
+struct node
+{
+	int data;
+        node *address   //pointer to next node
+}
+
+void main()
+{
+     start =new(struct node);            //four nodes have been created dynamically
+     node1=new(struct node);
+     node2=new(struct node);
+     node3=new(struct node);
+
+	start->data=0;
+	start->address=node1;
+
+	node1->data=1;
+	node1->address=node2;
+
+	node2->data=2;
+	node2->address=node3;
+
+	node3->data=3;
+	node3->address=NULL;         //end of list
+
+
+//printing elements of a linked list
+
+node *n=start;      //iterating variable
+while(n!=NULL)            //till it reaches last element
+{
+	cout<<n->data;
+	n=n->address;               //move to next node
+}
+ 
+
+
+3)STACK
+
+/*Can be implemented using classes in c++
+Consist of a pile of data items stacked one on another.
+Accessed by push and pop action with principle of LIFO(Last In First Out)
+
+#include<iostream.h>
+#include<conio.h>
+
+class stack
+{
+	public:
+	int sp;        //stack pointer
+	int a[10]          //size of stack
+
+	stack()
+	{ sp=-1}       //initiate stack pointer to bottom
+
+	void push(int data)           //data is pushed into the stack with stack pointer being incremented
+	{
+		a[++sp]=data;
+	}
+	int pop()
+	{
+	int temp=a[top--];        //data is removed out of the stack with stack pointer being deremented
+	return(temp);
+	}
+}
+
+
+//In a test run
+void main()
+{
+	stack s1;       //sp initiated to -1
+        s1.push(10);           //10 being uploaded into 	
+	s1.push(20);
+	s1.push(30);
+	cout<<s1.pop();    //30 being the most recent uploaded item accesed first
+	cout<<s1.pop();
+	cout<<s1.pop()
+ }
+
+
+
+
+
+
+
+
+
+
+
+4)QUEUE
+
+
+//same as the stack only difference being way items are acessed
+//Here FIFO principle is used
+
+class queue
+{
+	public:
+	int front=0; //front pointer	
+	int rear=-1;  //rear pointer
+	int size=0;
+	int a[10];  //size of queue
+	
+	queue(){ qp=-1;}
+
+	void enqueue(int data)           //data is pushed into the queue with rear  being incremented
+	{
+		a[++rear]=data;
+	}
+	int dequeue()
+	{
+	int temp=a[front++];        //data is removed out of the queue with front being incremented
+	return(temp);
+};
+
+//In a test run
+void main()
+{
+	queue q1;;       //rear initiated to -1, front to 0
+        q1.enqueue(10);           //10 being uploaded into 	
+	q1.enqueue(20);
+	q1.enqueue(30);
+	cout<<q1.dequeue();    //10 being the  oldest uploaded item accesed first
+	cout<<q1.dequeue();
+	cout<<q1.dequeue()
+ }
+
+
+
+5)HASH TABLES
+
+//Here a list of data items(large strings or integers) are coded into positive integer values which correspond to the index values of array where it will be stored
+// USed to store key-value pairs
+
+class data {
+private:
+      int key;
+      int value;
+public:
+	void getkey()
+	{ cin>>key;}
+	void getval()
+	{ cin>>value;}
+
+};
+
+int hashcode(int x,int y)
+{
+	int index;
+	index=x%20;
+	return (index);
+}	
+
+void main()
+{
+	int array[100];    //size of storae array
+	int n,k;
+	data d[20];	
+	
+	cin>>n;        //no. of key-value data pairs
+	for(int i=0;i<n;i++)
+	{
+		d[i].getkey();
+		d[i].getval();
+	}
+	
+	for(i=0;i<n;i++)
+	{
+		array[hashcode(d[i].value)]=d[i].key;  //key associated with the coded index of the array
+	}
+
+}
+		
+   
+
+	
+
+
+            	
