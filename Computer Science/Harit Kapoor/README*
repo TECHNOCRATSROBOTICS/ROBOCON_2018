@@ -1,1 +1,9 @@
+1. Binary search tree: A binary search tree (BST), also known as an ordered binary tree, is a node-based data structure in which each node has no more than two child nodes. Each child must either be a leaf node or the root of another binary search tree.
 
+2. Hash tables Hash: Table is a data structure which stores data in an associative manner. In a hash table, data is stored in an array format, where each data value has its own unique index value.
+
+3. Linked lists: an ordered set of data elements, each containing a link to its successor 
+
+4. Queue: One end is always used to insert data (enqueue) and the other is used to remove data (dequeue). Queue follows First-In-First-Out methodology..
+
+5. Stack:  a structure where insertion and deletion of items takes place at one end called top of the stack.
