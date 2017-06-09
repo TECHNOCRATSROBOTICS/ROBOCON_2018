@@ -2,6 +2,8 @@
 ## Sorting Techniques
    
 ### 1. Bubble Sort
+..* [C++](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.cpp)
+..* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.py)
    In Bubble sort, we take 2 values at a given time and sort them.  
    Example,  
    Let the array be [3,5,2,4,1]  
@@ -16,9 +18,9 @@
    g) Iteration 3 : [2,1,**3,4,5**]  
    h) Iteration 4 : [1,**2,3,4,5**]  
    i) Iteration 5 : [**1,2,3,4,5**]  
-### 2. Insertion Sort
+### 2. [Insertion Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/insertion_sort.py)
    
-### 3. Selection Sort
+### 3. [Selection Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/selectionsort.py)
    
-### 4. Merge Sort
+### 4. [Merge Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/mergesort.py)
   
