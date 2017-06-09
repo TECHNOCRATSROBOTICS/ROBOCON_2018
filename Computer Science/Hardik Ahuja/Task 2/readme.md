@@ -20,6 +20,15 @@
    h) Iteration 4 : [1,**2,3,4,5**]  
    i) Iteration 5 : [**1,2,3,4,5**]  
 ### 2. [Insertion Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/insertion_sort.py)
+
+  In Insertion Sort, we start with the first value and check that value with the presorted list. It is inserted in a specific place in the pre- sorted list.
+   Example,
+   Let the list be [5,4,3,2,1]  
+   a) We start with 5.  
+   b) Then we go for 4. 4 and 5 are unsorted. Hence we sort 4 and 5. The new list becomes [**4,5**,3,2,1].  
+   c) Then we go for 3. 3 is unsorted and its apt position is before 4. Hence it is inserted before 4. The list becomes [**3,4,5**,2,1].  
+   d) Next iteration is [**2,3,4,5**,1].  
+   e) Next iteration is [**1,2,3,4,5**].  
    
 ### 3. [Selection Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/selectionsort.py)
    
