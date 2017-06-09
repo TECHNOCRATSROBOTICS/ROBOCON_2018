@@ -31,7 +31,17 @@
    d) Next iteration is [**2,3,4,5**,1].  
    e) Next iteration is [**1,2,3,4,5**].  
    
-### 3. [Selection Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/selectionsort.py)
+### 3. Selection Sort
+* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/selectionsort.py)
+  
+  In Selection sort, we declare a min variable and move along the list. If we encounter a number, less than the min variable, we change the min variable. We swap the ith element with the min variable.
+   Example,  
+   Let the array be [5,4,3,2,1]
+   a) The first element is 5. We go on and find that 4 is less than 5. Then min = 4. By the end of the list, we found out that 1 is less than 5 and min = 1. Hence we swap 1 and 5. The new array becomes [**1**,4,3,2,5].  
+   b) The next iteration is [**1,2**,3,4,5].  
+   c) The next iteration is [**1,2,3**,4,5].  
+   d) The next iteration is [**1,2,3,4**,5].  
+   e) The next iteration is [**1,2,3,4,5**].  
    
 ### 4. [Merge Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/mergesort.py)
   
