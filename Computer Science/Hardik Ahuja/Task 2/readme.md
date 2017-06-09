@@ -43,5 +43,16 @@
    d) The next iteration is [**1,2,3,4**,5].  
    e) The next iteration is [**1,2,3,4,5**].  
    
-### 4. [Merge Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/mergesort.py)
+### 4. Merge Sort
+* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/mergesort.py)
   
+  In merge sort we use a recursive function to sort the elements of the array. At first, we create different list out of a single list. Then we combine all the elements back to a single array, but at each step, we sort them.  
+  Let the list be [8,7,2,5,6,1,4,3].  
+  a) We break it into 2 equal list of [8,7,2,5] and [6,1,4,3].  
+  b) Then we break it further into equal parts [8,7], [2,5], [6,1], [4,3].  
+  c) We further break it into equal parts and then join them after sorting it such as [7,8], [2,5], [1,6], [3,4].  
+  d) We then join it further. The list becomes [2,5,7,8] and [1,3,4,6].  
+  e) We then finally get a sorted list after joining these 2 lists. [1,2,3,4,5,6,7,8].  
+ 
+### 5. Quick Sort
+* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/quicksort.py)
