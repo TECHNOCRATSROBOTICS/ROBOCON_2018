@@ -19,7 +19,8 @@
    g) Iteration 3 : [2,1,**3,4,5**]  
    h) Iteration 4 : [1,**2,3,4,5**]  
    i) Iteration 5 : [**1,2,3,4,5**]  
-### 2. [Insertion Sort](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/insertion_sort.py)
+### 2. [Insertion Sort]
+* [C++](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/insertion_sort.py)
 
   In Insertion Sort, we start with the first value and check that value with the presorted list. It is inserted in a specific place in the pre- sorted list.
    Example,
