@@ -2,8 +2,8 @@
 ## Sorting Techniques
    
 ### 1. Bubble Sort
-..* [C++](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.cpp)
-..* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.py)
+* [C++](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.cpp)
+* [Python](https://github.com/TECHNOCRATSROBOTICS/ROBOCON_2018/blob/master/Computer%20Science/Hardik%20Ahuja/Task%202/bubblesort.py)
    In Bubble sort, we take 2 values at a given time and sort them.  
    Example,  
    Let the array be [3,5,2,4,1]  
