@@ -11,3 +11,6 @@ The given code is for a standard queue that supports FIFO strategy and has funct
 
 4.	*Red-Black Tree:*
 The given code is for a standard Red-Black tree that supports Insertion, Deletion and calculating the depth of the tree.
+
+5. *Merge Sort:*
+The given code is for merge sorting an array of integers. It follows Divide and Conquer algorithm.
