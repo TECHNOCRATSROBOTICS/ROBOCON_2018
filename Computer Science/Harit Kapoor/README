@@ -7,3 +7,15 @@
 4. Queue: One end is always used to insert data (enqueue) and the other is used to remove data (dequeue). Queue follows First-In-First-Out methodology..
 
 5. Stack:  a structure where insertion and deletion of items takes place at one end called top of the stack.
+
+6. Merge sort: it is a divide and conquer algorithm and it divides the array until atomicity is achived. once atomicity is achived they are joined back in the same order but are sorted before merging.
+
+7. Insertion sort: It it the most basic type of sorting. it compares all the values.
+
+8. Bubble sort: Bubble sort is a simple sorting algorithm that repeatedly steps through the list to be sorted, compares each pair of adjacent items and swaps them if they are in the wrong order
+
+9. Dynamic programming: breaking big problem into smaller problems and then solving them.
+
+10. Greedy algorithm: It wrks in such a way that the cmputer selects the best option as per the input and the data available for the best optiumum results.
+the problem described here is the simple coin change problem which computes the minimum amount of coins required for the given amount.
+ 
