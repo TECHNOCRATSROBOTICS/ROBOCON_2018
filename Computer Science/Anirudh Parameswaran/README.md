@@ -14,3 +14,6 @@ The given code is for a standard Red-Black tree that supports Insertion, Deletio
 
 5. *Merge Sort:*
 The given code is for merge sorting an array of integers. It follows Divide and Conquer algorithm.
+
+6. *Insertion Sort:*
+The given code is for Insertion sorting an array of integers. It uses a sentinel to assign the value of the smallest number to thefirst position in the array before sorting it.
