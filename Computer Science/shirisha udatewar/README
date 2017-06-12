@@ -1,3 +1,36 @@
 Stack:
 
 A stack is a container of objects that are inserted and removed according to the last-in first-out (LIFO) principle. In the pushdown stacks only two operations are allowed: push the item into the stack, and pop the item out of the stack. A stack is a limited access data structure - elements can be added and removed from the stack only at the top. push adds an item to the top of the stack, pop removes the item from the top. 
+
+Queues:
+
+A queue is a container of objects (a linear collection) that are inserted and removed according to the first-in first-out (FIFO) principle. An excellent example of a queue is a line of students in the food court of the UC. New additions to a line made to the back of the queue, while removal (or serving) happens in the front. In the queue only two operations are allowed enqueue and dequeue. Enqueue means to insert an item into the back of the queue, dequeue means removing the front item.
+
+Linked list:
+
+Linked List is a linear data structure and it is very common data structure which consists of group of nodes in a sequence which is divided in two parts. Each node consists of its own data and the address of the next node and forms a chain. Linked Lists are used to create trees and graphs.
+
+Greedy programming:
+
+It is a mathematical process that looks for simple, easy to implement solution for complex, multistep problems by deciding which next step will provide most obvious answer.
+
+Dynamic programming:
+
+it is a stategy for optimizing the problems.
+
+Selection sort:
+
+The selection sort algorithm sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning.
+
+Insertion sort:
+
+t is a simple Sorting algorithm which sorts the array by shifting elements one by one
+
+Merge sort:
+
+ Merge Sort is a Divide and Conquer algorithm. It divides input array in two halves, calls itself for the two halves and then merges the two sorted halves
+ 
+ Bubble sort
+ 
+ Bubble Sort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order..
+ 
