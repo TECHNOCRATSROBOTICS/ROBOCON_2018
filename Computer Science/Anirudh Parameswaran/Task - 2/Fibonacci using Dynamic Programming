@@ -1,0 +1,29 @@
+//Fibonacci numbers using memeoization
+
+#include <iostream>
+using namespace std;
+
+int fib(int num, int *memoize) {
+	if (num < 2) {
+		return num;
+	}
+	else {
+		if (memoize[num] < 0) {
+			memoize[num] = fib(num - 1, memoize) + fib(num - 2, memoize);
+		}
+		return memoize[num];
+	}
+}
+
+int main() {
+	int memory[100], n;
+	memory[0] = 0;
+	memory[1] = 1;
+	for (int i = 2; i < 100; i++) 
+	memory[i] = INT_MIN;
+	
+	cout << "Enter a number:\n";
+	cin >> n;
+	cout << '\n' << n << "th Fibonacci number is " << fib(n, memory) << endl;
+	return 0;
+}
