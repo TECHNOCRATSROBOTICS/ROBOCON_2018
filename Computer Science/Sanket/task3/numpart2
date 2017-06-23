@@ -1,0 +1,75 @@
+#Mathematical operations
+
+
+import numpy as np
+
+#Trignometric functions
+
+a=np.array([30,60,90])
+
+b=np.sin(a*np.pi/180)  #sin values
+print(b) 
+
+c=np.tan(a*np.pi/180)   #tan values
+print(c) 
+
+#similaily for inverse function,
+
+
+d=np.arcsin(b)
+print(np.degrees(d))  # since inverse values are in radians convert to degree
+
+
+#.ceil,.floor, .around are the rounding functions
+
+#Arithmatic operations
+
+
+a=np.array([1,2,3,4,5])
+b=np.array([2,2,2,2,2])
+
+print(np.add(a,b))
+print(np.subtract(a,b))
+print(np.multiply(a,b))
+print(np.divide(a,b))
+
+print(np.mod(a,b))  #takes modulus of a%b corresponding elements
+
+
+
+##operations on complex numbers
+
+#say 
+a=np.array([1,2,3,4,5],dtype=complex)
+print(a)
+print(np.real(a))   #gives real part
+print(np.imag(a))     #gives imaginary part
+print(np.conj(a))   # gives conjugate of the complex number
+
+
+
+
+##statistical operations
+
+a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+
+print(np.amin(a)) #overall min
+print(np.amin(a,1)) # min in each row
+
+# for max, amax function
+
+
+print(np.ptp(a)) # the range of data
+
+print(np.mean(a))  # mean value
+
+print(np.median(a)) #meadian alue
+
+print(np.std(a))  #standard deviation
+
+print(np.var(a))  #variance
+
+
+
+
+
