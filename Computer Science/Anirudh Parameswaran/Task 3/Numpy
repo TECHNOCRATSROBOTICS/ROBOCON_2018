@@ -1,0 +1,47 @@
+import numpy as np
+
+a = np.array([1, 2, 3])   # Create a rank 1 array
+print(a)
+
+b = np.array([[1,2,3],[4,5,6]])    # Create a rank 2 array
+print(b)
+
+c = np.full((2,2), 7)  # Create a constant array
+print(c)               
+
+d = np.eye(2)         # Create a 2x2 identity matrix
+print(d)             
+
+e = np.random.random((2,2))  # Create an array filled with random values
+print(e)
+
+f = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+
+b = f[:2, 1:3]  #Use slicing to pull out the subarray consisting of the first 2 rows
+print(b)        # and columns 1 and 2
+
+print(np.array([f[0, 0], [1, 1], [2, 0]]))  #slicing the array
+
+print(f[f > 5])  #prints elements that are greater than 5
+
+x = np.array([1, 2])   # Let numpy choose the datatype
+print(x.dtype)         # Prints "int64"
+
+x = np.array([1.0, 2.0])   # Let numpy choose the datatype
+print(x.dtype)             #Prints "float64"
+
+x = np.array([[1,2],[3,4]], dtype=np.float64)
+y = np.array([[5,6],[7,8]], dtype=np.float64)
+
+print(x + y)
+print(np.add(x, y))         #Similarly use 'subtract' for subtraction
+
+print(x * y)
+print(np.multiply(x, y))    #Elementwise multiplication
+
+print(x.dot(y))
+print(np.dot(x, y))         #Dot product
+
+print(x.T)                 #Transpose
+
+
