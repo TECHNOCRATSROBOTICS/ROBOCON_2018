@@ -21,4 +21,4 @@ TASK - 3:
 numpy functions for creating arrays and mathematical operations on arrays and polynomials
 
 TASK - 4:
-GPIO controlling in Raspberry pi
+GPIO controlling in Raspberry pi,recieving pwm output, controlling servo motors using pwm output
