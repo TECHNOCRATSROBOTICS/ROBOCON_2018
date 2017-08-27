@@ -1,5 +1,8 @@
 READMe::
 
+Guide for the files
+a) draft1.py - weight sensing working module(independent)
+
 MODULE1: Weight-sensing using OpenCv
 
 
