@@ -3,7 +3,7 @@
 
 <h7>Problem Statement</h7>
 
-<h10>Task<\h10>
+<h10>Task</h10>
 -  The bot is to be autonomous and start with the push of a button.
 -  The bot has to follow a line for travelling.
 -  At first node, the bot must pick a ball.
