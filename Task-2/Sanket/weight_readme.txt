@@ -5,7 +5,9 @@ Guide for the files
 a) draft1.py - weight sensing working module(independent)
 b) bottle.xml  - the cascade file to be included
 c)super.py   - the superimposing technique
-d)
+d)hsv.py   - Only hsv approach
+e)find_hsv.py  -rgb2hsv conversion
+f)test.py - only cotour approach
 MODULE1: Weight-sensing using OpenCv
 
 
