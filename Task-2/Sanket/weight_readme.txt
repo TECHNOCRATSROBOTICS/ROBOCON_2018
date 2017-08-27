@@ -1,8 +1,11 @@
 READMe::
 
 Guide for the files
-a) draft1.py - weight sensing working module(independent)
 
+a) draft1.py - weight sensing working module(independent)
+b) bottle.xml  - the cascade file to be included
+c)super.py   - the superimposing technique
+d)
 MODULE1: Weight-sensing using OpenCv
 
 
