@@ -8,6 +8,7 @@ c)super.py   - the superimposing technique
 d)hsv.py   - Only hsv approach
 e)find_hsv.py  -rgb2hsv conversion
 f)test.py - only cotour approach
+g)cascade.py-  HAAR CASCADE approach
 MODULE1: Weight-sensing using OpenCv
 
 
