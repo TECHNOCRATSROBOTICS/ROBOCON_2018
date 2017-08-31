@@ -1,0 +1,14 @@
+import Adafruit_BBIO.GPIO as GPIO
+import time
+ 
+GPIO.setup("P8_9", GPIO.OUT)
+GPIO.setup("P8_10",GPIO.IN)
+ 
+while True:
+    GPIO.output("P8_9", GPIO.LOW)
+    time.sleep(2)
+    GPIO.output("P8_10", GPIO.HIGH)
+    time.sleep(10)
+	GPIO.output("P8_9", GPIO.LOW)
+	duration = pulseIn(10, HIGH)
+  distance= duration*0.034/2    //0.034 is the speed of sound in cm/micron seconds
