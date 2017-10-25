@@ -1,4 +1,4 @@
-#your main computer with your new cascade file, put it in your working directory, and let's try it out!
+#This is the code for checking the haar cascade
 
 import numpy as np
 import cv2
@@ -16,16 +16,16 @@ while 1:
     
     # add this
     # image, reject levels level weights.
-    watches = watch_cascade.detectMultiScale(gray, 50, 50)
+    watches = watch_cascade.detectMultiScale(gray, 50, 50)          # check for our cascade object
     
     # add this
     for (x,y,w,h) in watches:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,0),2)
+        cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,0),2)     #get the coordinates of the rectangle
 
     
 
         
-        roi_gray = gray[y:y+h, x:x+w]
+        roi_gray = gray[y:y+h, x:x+w]       
         roi_color = img[y:y+h, x:x+w]
       
 
