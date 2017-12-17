@@ -15,6 +15,8 @@ int button;                                                                     
 void setOutput(int );                                                                 //Used to control the motion of the stepper for the rack mechanism
 int flag=1;                                                                           //Used to store the current position where the assembly is currently
 int step_count=0;                                                                     //Stores the value of the position where the previous lock was made so the ball can be dropped and new step_count can be set thereafter
+int buttonState;
+int success=0;
 //////////////////////////////////////////////////////////////////////////////
 void setup() {
   pinMode(motorPin1, OUTPUT);
@@ -26,53 +28,92 @@ void setup() {
   pinMode(dir1,OUTPUT);
   analogWrite(pwm1,0);
   pinMode(buttonPin,INPUT);
+  buttonState=0;
   Serial.begin(9600);
+}
+//////////////////////////////////////////////////////////////////////////////
+void loop()
+{
+  char input = 0;
+  if(Serial.available())
+  {
+    input = Serial.read();
+  }
+  switch (input)
+  {
+    case 'r':
+      rack1();
+      delay(9000);
+      break;
+  }
+  input= 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////
-void loop(){
-  button = digitalRead(buttonPin);                                                    //Stores the Value of the current state of the button
-  if(button==1){                                                                      //Button==1 means the button is not pressed
+void rack1(){
+  success=0;
+  while(success==0){
+  button = digitalRead(buttonPin);
+  Serial.println("Button:");
+  Serial.print(digitalRead(buttonPin));
+  float volts = analogRead(sensor)*0.0048828125;  // value from sensor * (5/1024)
+  int distance = 13*pow(volts, -1); // worked out from datasheet graph
+  if(button==1)
+  {
     forward();
   }
-  else if (button==0){                                                                //Button==0 Means the button is pressed
-              step_count=flag;                                                        //step_count is storing the position from which the ball was taken
-              flag=0;                                                                 //Now we set flag valus to zero to count the number of barriers it will pass during the reverse motion
-              for( ; ; )
-              {                                                                       //This for loop is for moving the flap up once the ball is handed over to the transfer mechanism
-                if( count == 128 ){
-                  break ;
-                }
-              clockwise();
-              count++ ;                                                                //This count value is of the stepper motor count value
-              }
-              backward();                                                              //Backward function is called to tell the Rack mechanism to reverse its direction of motion now
-          while(flag!=step_count+1){                                                   //Now We are checking the number of barriers passed through before stopping and locking the flap for the next call
-              float volts = analogRead(sensor)*0.0048828125;                           //Now we are reading the sharp ir value from the SHARP IR Sensor=>value from sensor * (5/1024)
-              int distance = 13*pow(volts, -1);                                        //This will use the voltage value so got from the analog pin to convert it into the distance  =>  worked out from datasheet graph
-              while((distance>=4)&&(distance<10))
-              {                                                                        //Now the  Comparison for the distance starts to detect the barrier
-                  float volts = analogRead(sensor)*0.0048828125;                       //This line is declared here again so that we can get the instantaneous values
-                  int distance = 13*pow(volts, -1);
-                  if(distance>10)
-                  {                                                                    //This condition checks that the barrier has been past and now we can say that one barrier has been successfully passed and we can increment the counter by 1
-                      flag+=1;
-                      break;
-                  }
-              }
-                  delay(200);
-         }
-          for( ; ; ){                                                                  //This for loop will now move the stepper in order to lock the flap for the next ball push
-              if( count == 256 )
-              {
-              break ;
-              }
-            anticlockwise();
-            count++;
-         }
-         count = 0 ;                                                                   //Resetting the stepper motor count for the next rotation
+  else if (button==0){
+    Serial.println("Button Hitted");
+    step_count=flag;
+   flag=0;
+    for( ; ; ){
+    if( count == 128 ){    
+      break ;
+    }    
+  clockwise();
+  count++ ;
+    }
+     backward();
+    while(flag!=step_count+1){
+    Serial.println("Loop Execution Started");
+   float volts = analogRead(sensor)*0.0048828125;  // value from sensor * (5/1024)
+  int distance = 13*pow(volts, -1); // worked out from datasheet graph
+  Serial.println("Distance is:");
+  Serial.print(distance);
+    while((distance>=4)&&(distance<10)){
+      Serial.println("Distance has Reduced now");
+      float volts = analogRead(sensor)*0.0048828125;  // value from sensor * (5/1024)
+  int distance = 13*pow(volts, -1); // worked out from datasheet graph
+      if(distance>10){
+        Serial.println("Hand Removed");
+        flag+=1;
+        Serial.println("The position value now is:");
+        Serial.print(flag);
+        break;
+       }
+     }
+     
+      Serial.println("Loop Executed");
+      delay(200);
+ }
+    for( ; ; ){
+    if( count == 256 ){
+    break ;
+    }
+  anticlockwise();
+  count++;  
+  //Serial.print("Count:");
+  //Serial.println(count);
+ }
+ count = 0 ;
+ success=1;
+ halt();
+ Serial.println("Loop Execution finished");
+ return;
+  }
   }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void anticlockwise()                                                                   //This function will give the closing of the flap to lock the flap for throwing the next ball there after
@@ -96,15 +137,20 @@ void clockwise()                                                                
 void backward()                                                                         //This function will tell the rack to move backward
 {
   digitalWrite(dir1,LOW);
-  analogWrite(pwm1,200);
+  analogWrite(pwm1,250);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void forward()                                                                           //This Function will tell the rack to move forward
 {
   digitalWrite(dir1,HIGH);
-  analogWrite(pwm1,200);
+  analogWrite(pwm1,250);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void halt()
+{
+  digitalWrite(dir1,LOW);
+  analogWrite(pwm1,0);  
+}
 void setOutput(int out)                                                                  //Used for controlling the stepper motor 
 {
   digitalWrite(motorPin1, bitRead(lookup[out], 0));
