@@ -3,7 +3,7 @@ byte motorPin2 = 23;                                                            
 byte motorPin3 = 24;                                                                  // Yellow - 28BYJ48 pin 3
 byte motorPin4 = 25;                                                                  // Orange - 28BYJ48 pin 4
                                                                                       // Red    - 28BYJ48 pin 5 (VCC)
-#define sensor A3                                                                     //Sharp IR connection on the arduino
+#define sensor A0                                                                     //Sharp IR connection on the arduino
 int motorSpeed = 1200;                                                                //variable to set stepper speed
 int count = 0;                                                                        // count of steps made
 int countsperrev =512;                                                                // number of steps per full revolution
