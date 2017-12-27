@@ -16,7 +16,7 @@ Mega-
 2-Push Button For rack 1
 3-Push Button for rack 2
 4-Push Button for rack 3
-6 ,7 -Connections to cytron for rack motor 1
+6 ,7 -Connections to cytron for rack motor 1			//Refer Point 6 Below and change Accordingly
 8 ,9 -Connections to cytron for rack motor 2
 10,11-Connections to cytron for rack motor 3
 12,13- Rack Lifting Pneumatic control
@@ -39,4 +39,6 @@ Important Points to be noted:
 	c.Use a k resistor and connect it between the ground and the signal pin
 	d.Take output accress the resistor signal pin Junction and then feed it into the arduino
 5.If using 7805 Regulator to power up the steppers make sure the battery input voltage is greater then 7V else the Whole system will fail even though everything will seem to work
+6.Inthe Arduino that is currently mounted on the Manual Bot the 6th DigiTal Pin is not working so please take care of that
+7.For the PS2 Shiels the A1 pin is dedicated for the software interrupt so do not use that pin in the code else the status LED will not work and connection with controller will no be established
 
