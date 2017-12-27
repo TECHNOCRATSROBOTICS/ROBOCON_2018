@@ -14,17 +14,18 @@ Servo servo1;
 byte pwm1=5;                                                                          //PWM1 pin of cytron for the rack motor
 byte dir1=4;
 byte servo_pin=A0; 
-int servo_state=0;
+byte servo_state=0;
 byte extenderstate=0;
 int pneumaticpin1=A1;
 int pneumaticpin2=A2;
+
+unsigned int servo_angle=0;
 void setup()
 {
   ps2.begin(9600); 
   // This baudrate must same with the jumper setting at PS2 shield
   Serial.begin(9600);
   servo1.attach(servo_pin);
-  servo1.write(0);
   delay(2000);
   Serial.println("Initialized");
   
@@ -92,8 +93,8 @@ void loop()
   Serial.println("PS2_TRIANGLE");
   else if(Ps2_CROSS== 0){
   Serial.println("PS2_CROSS");//Servo motor
-  servo_state++;
-  servomove();
+  if(servo_state==0){servo_extend();}
+  else { servo_retract();}
   }
   else if(Ps2_SQUARE== 0)
   { 
@@ -122,7 +123,7 @@ void extend()
   digitalWrite(pneumaticpin2,LOW);
   Serial.println("pneumaticpin2 High");
   extenderstate=1;
-  Serial.flush();
+  //Serial.flush();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void contract()
@@ -134,15 +135,28 @@ void contract()
   digitalWrite(pneumaticpin2,LOW);
   Serial.println("pneumaticpin1 LOW");
   extenderstate=0;
-  Serial.flush();
+  //Serial.flush();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void servomove(){
-  if (servo_state%2==1){
-    servo1.write(90);
-    
+void servo_extend(){
+
+  int i=0;
+  for(i=servo_angle;i<90;i++)
+  {
+    servo1.write(i);
   }
-  else { servo1.write(0);}
+  servo_state=1;
+  servo_angle=90;
+}
+
+void servo_retract(){
+  int i;
+  for(i=servo_angle;i>0;i--)
+  {
+    servo1.write(i);
+  }
+  servo_state=0;
+  servo_angle=0;
 }
 
 
