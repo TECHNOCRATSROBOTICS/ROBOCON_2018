@@ -1,23 +1,23 @@
 
-byte motorPin11 = 8;                                                                   // Blue   - 28BYJ48 pin 1
-byte motorPin12 = 9;                                                                   // Pink   - 28BYJ48 pin 2
-byte motorPin13 = 10;                                                                  // Yellow - 28BYJ48 pin 3
-byte motorPin14 = 11;                                                                  // Orange - 28BYJ48 pin 4
+byte motorPin11 = 22;                                                                   // Blue   - 28BYJ48 pin 1
+byte motorPin12 = 24;                                                                   // Pink   - 28BYJ48 pin 2
+byte motorPin13 = 26;                                                                  // Yellow - 28BYJ48 pin 3
+byte motorPin14 = 28;                                                                  // Orange - 28BYJ48 pin 4
                                                                                       // Red    - 28BYJ48 pin 5 (VCC)
-byte motorPin21 = 12;                                                                   // Blue   - 28BYJ48 pin 1
-byte motorPin22 = 13;                                                                   // Pink   - 28BYJ48 pin 2
-byte motorPin23 = 14;                                                                  // Yellow - 28BYJ48 pin 3
-byte motorPin24 = 15;                                                                  // Orange - 28BYJ48 pin 4
+byte motorPin21 = 32;                                                                   // Blue   - 28BYJ48 pin 1
+byte motorPin22 = 34;                                                                   // Pink   - 28BYJ48 pin 2
+byte motorPin23 = 36;                                                                  // Yellow - 28BYJ48 pin 3
+byte motorPin24 = 40;                                                                  // Orange - 28BYJ48 pin 4
                                                                                       // Red    - 28BYJ48 pin 5 (VCC)
-byte motorPin31 = 16;                                                                   // Blue   - 28BYJ48 pin 1
-byte motorPin32 = 17;                                                                   // Pink   - 28BYJ48 pin 2
-byte motorPin33 = 18;                                                                  // Yellow - 28BYJ48 pin 3
-byte motorPin34 = 19;                                                                  // Orange - 28BYJ48 pin 4
+byte motorPin31 = 42;                                                                   // Blue   - 28BYJ48 pin 1
+byte motorPin32 = 44;                                                                   // Pink   - 28BYJ48 pin 2
+byte motorPin33 = 46;                                                                  // Yellow - 28BYJ48 pin 3
+byte motorPin34 = 48;                                                                  // Orange - 28BYJ48 pin 4
                                                                                       // Red    - 28BYJ48 pin 5 (VCC
 
-#define sensor1 A3                                                                     //Sharp IR connection on the arduino
-#define sensor2 A4
-#define sensor3 A5
+#define sensor1 A0                                                                    //Sharp IR connection on the arduino
+#define sensor2 A1
+#define sensor3 A2
 int motorSpeed = 1200;                                                                //variable to set stepper speed
 int count1 = 0;                                                                        // count of steps made
 int count2 = 0;
@@ -27,15 +27,15 @@ int countsperrev2 =512;
 int countsperrev3 =512; 
 
 int lookup[8] = {B01000, B01100, B00100, B00110, B00010, B00011, B00001, B01001};
-byte buttonPin1=42;                                                                     //Pin to which the button is connected
-byte buttonPin2=43;
-byte buttonPin3=44;
-byte pwm1=4;                                                                          //PWM1 pin of cytron for the rack motor
-byte pwm2=5;
-byte pwm3=6;
-byte dir1=A0;                                                                         //dir0 pin of the cytron for the rack motor
-byte dir2=A1;
-byte dir3=A2;
+byte buttonPin1=50;                                                                     //Pin to which the button is connected
+byte buttonPin2=3;
+byte buttonPin3=4;
+byte pwm1=11;                                                                          //PWM1 pin of cytron for the rack motor
+byte pwm2=13;
+byte pwm3=5;
+byte dir1=10;                                                                         //dir0 pin of the cytron for the rack motor
+byte dir2=12;
+byte dir3=52;
 int button1;                                                                           //Variable to store the digital state value of the button
 int button2;
 int button3;
@@ -96,19 +96,19 @@ void loop()
   }
   switch (input)
   {
-    case '1':
+    case 'a':
       rack1();
       delay(9000);
       break;
-    case '2':
+    case 'b':
       rack2();
       delay(9000);
       break;
-    case '3':
+    case 'c':
       rack3();
       delay(9000);
       break;
-    case 'a':
+    case 'k':
         if(r1>0){
           rack1();
           }
@@ -132,11 +132,11 @@ void rack1(){
   Serial.print(digitalRead(buttonPin1));
   float volts = analogRead(sensor1)*0.0048828125;  // value from sensor * (5/1024)
   int distance = 13*pow(volts, -1); // worked out from datasheet graph
-  if(button1==1)
+  if(button1==0)
   {
     forward1();
   }
-  else if (button1==0){
+  else if (button1==1){
     Serial.println("Button Hitted");
     step_count1=flag1;
    flag1=0;
@@ -198,11 +198,11 @@ void rack2(){
   Serial.print(digitalRead(buttonPin2));
   float volts = analogRead(sensor2)*0.0048828125;  // value from sensor * (5/1024)
   int distance = 13*pow(volts, -1); // worked out from datasheet graph
-  if(button2==1)
+  if(button2==0)
   {
     forward2();
   }
-  else if (button2==0){
+  else if (button2==1){
     Serial.println("Button Hitted");
     step_count2=flag2;
    flag2=0;
@@ -263,11 +263,11 @@ void rack3(){
   Serial.print(digitalRead(buttonPin3));
   float volts = analogRead(sensor3)*0.0048828125;  // value from sensor * (5/1024)
   int distance = 13*pow(volts, -1); // worked out from datasheet graph
-  if(button3==1)
+  if(button3==0)
   {
     forward3();
   }
-  else if (button3==0){
+  else if (button3==1){
     Serial.println("Button Hitted");
     step_count3=flag3;
    flag3=0;
