@@ -55,6 +55,9 @@ int success3=0;
 int r1=5;
 int r2=5;
 int r3=5;
+int extenderpin1=5;
+int extenderpin2=3;
+char stroke_state;
 //////////////////////////////////////////////////////////////////////////////
 void setup() {
   pinMode(motorPin11, OUTPUT);
@@ -84,6 +87,10 @@ void setup() {
   pinMode(dir3,OUTPUT);
   analogWrite(pwm3,0);
   pinMode(buttonPin3,INPUT);
+  pinMode(extenderpin1,OUTPUT);
+  pinMode(extenderpin2,OUTPUT);
+  digitalWrite(extenderpin1,HIGH);
+  digitalWrite(extenderpin2,HIGH);
   Serial.begin(9600);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -99,6 +106,12 @@ void loop()
     case 'a':
       rack1();
       delay(9000);
+      break;
+    case 'l':
+      setPneumatic(extenderpin1,extenderpin2);
+      break;
+    case 'r':
+      clearPneumatic(extenderpin1,extenderpin2);
       break;
     case 'b':
       rack2();
@@ -439,3 +452,22 @@ void setOutput3(int out)                                                        
   digitalWrite(motorPin33, bitRead(lookup[out], 2));
   digitalWrite(motorPin34, bitRead(lookup[out], 3));
 }
+void setPneumatic(int pin1,int pin2)
+{
+  digitalWrite(pin1,LOW);
+  digitalWrite(pin2,HIGH);
+  delay(1000);
+  digitalWrite(pin1,LOW);
+  digitalWrite(pin2,LOW);
+  Serial.println("pin2 High");
+}
+void clearPneumatic(int pin1,int pin2)
+{
+  digitalWrite(pin1,HIGH);
+  digitalWrite(pin2,LOW);
+  delay(1000);
+  digitalWrite(pin1,LOW);
+  digitalWrite(pin2,LOW);
+  Serial.println("pin1 High");
+}
+
