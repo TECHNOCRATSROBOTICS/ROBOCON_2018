@@ -55,8 +55,10 @@ int success3=0;
 int r1=5;
 int r2=5;
 int r3=5;
-int extenderpin1=5;
-int extenderpin2=3;
+int extenderpin1=23;
+int extenderpin2=25;
+int rackpullpin1=27;
+int rackpullpin2=29;
 char stroke_state;
 //////////////////////////////////////////////////////////////////////////////
 void setup() {
@@ -91,6 +93,10 @@ void setup() {
   pinMode(extenderpin2,OUTPUT);
   digitalWrite(extenderpin1,HIGH);
   digitalWrite(extenderpin2,HIGH);
+  pinMode(rackpullpin1,OUTPUT);
+  pinMode(rackpullpin2,OUTPUT);
+  digitalWrite(rackpullpin1,HIGH);
+  digitalWrite(rackpullpin2,HIGH);
   Serial.begin(9600);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -112,6 +118,12 @@ void loop()
       break;
     case 'r':
       clearPneumatic(extenderpin1,extenderpin2);
+      break;
+    case 'i':
+      setPneumatic(rackpullpin1,rackpullpin2);
+      break;
+    case 'o':
+      setPneumatic(rackpullpin1,rackpullpin2);
       break;
     case 'b':
       rack2();
