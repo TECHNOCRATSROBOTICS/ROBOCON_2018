@@ -55,10 +55,10 @@ int success3=0;
 int r1=5;
 int r2=5;
 int r3=5;
-int extenderpin1=23;
-int extenderpin2=25;
-int rackpullpin1=27;
-int rackpullpin2=29;
+int extenderpin1=A4;                                                                  //Assigned pin1 for the Pneumatic
+int extenderpin2=A5;                                                                  //Assigned pin2 for the Pneumatic
+int rackpullpin1=A6;                                                                  //Assigned pin3 for the Pneumatic
+int rackpullpin2=A7;                                                                  //Assigned pin4 for the Pneumatic
 char stroke_state;
 //////////////////////////////////////////////////////////////////////////////
 void setup() {
@@ -98,6 +98,11 @@ void setup() {
   digitalWrite(rackpullpin1,HIGH);
   digitalWrite(rackpullpin2,HIGH);
   Serial.begin(9600);
+  Serial.println("Initialization Complete!!");
+  Serial.println("========================================Lets Start========================================");
+  Serial.println("===================================Technocrats Robotics===================================");
+  Serial.println("Pneumatics are at Characters: l  r  i  o");
+  Serial.println("Racks are at Positions: a  b  c  k");
 }
 //////////////////////////////////////////////////////////////////////////////
 void loop()
@@ -114,16 +119,20 @@ void loop()
       delay(9000);
       break;
     case 'l':
-      setPneumatic(extenderpin1,extenderpin2);
+      setPneumatic(extenderpin1,extenderpin2,rackpullpin1,rackpullpin2);
+      delay(2000);
       break;
     case 'r':
-      clearPneumatic(extenderpin1,extenderpin2);
+      clearPneumatic(extenderpin1,extenderpin2,rackpullpin1,rackpullpin2);
+      delay(2000);
       break;
     case 'i':
-      setPneumatic(rackpullpin1,rackpullpin2);
+      setPneumatic(rackpullpin1,rackpullpin2,extenderpin1,extenderpin2);
+      delay(2000);
       break;
     case 'o':
-      setPneumatic(rackpullpin1,rackpullpin2);
+      clearPneumatic(rackpullpin1,rackpullpin2,extenderpin1,extenderpin2);
+      delay(2000);
       break;
     case 'b':
       rack2();
@@ -464,22 +473,40 @@ void setOutput3(int out)                                                        
   digitalWrite(motorPin33, bitRead(lookup[out], 2));
   digitalWrite(motorPin34, bitRead(lookup[out], 3));
 }
-void setPneumatic(int pin1,int pin2)
+void setPneumatic(int pin1,int pin2,int pin3,int pin4)
 {
+  Serial.println("////////////////////////////////////////");                             //This Function Is used for Extending the Pneumatics
+  Serial.println("Set:  ");
+  Serial.println(pin2);
+  Serial.println("Clear:  ");
+  Serial.println(pin1);
   digitalWrite(pin1,LOW);
   digitalWrite(pin2,HIGH);
+  digitalWrite(pin3,LOW);
+  digitalWrite(pin4,LOW);
   delay(1000);
   digitalWrite(pin1,LOW);
   digitalWrite(pin2,LOW);
-  Serial.println("pin2 High");
+  digitalWrite(pin3,LOW);
+  digitalWrite(pin4,LOW);
+
+  Serial.println("////////////////////////////////////////");
 }
-void clearPneumatic(int pin1,int pin2)
-{
+void clearPneumatic(int pin1,int pin2,int pin3,int pin4){
+  Serial.println("////////////////////////////////////////");                             //This Function is used for contracting the Pneumatics
+  Serial.println("Set:  ");
+  Serial.println(pin1);
+  Serial.println("Clear:  ");
+  Serial.println(pin2);
   digitalWrite(pin1,HIGH);
   digitalWrite(pin2,LOW);
+  digitalWrite(pin3,LOW);
+  digitalWrite(pin4,LOW);
   delay(1000);
   digitalWrite(pin1,LOW);
   digitalWrite(pin2,LOW);
-  Serial.println("pin1 High");
+  digitalWrite(pin3,LOW);
+  digitalWrite(pin4,LOW);
+  Serial.println("////////////////////////////////////////");
 }
 
