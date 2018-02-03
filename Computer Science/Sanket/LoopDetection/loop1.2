@@ -1,0 +1,110 @@
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/imgcodecs.hpp"
+
+#include <iostream>
+#include<stdlib.h>
+#include <stdio.h>
+#include <wiringPi.h>
+#include <softPwm.h>
+
+using namespace std;
+using namespace cv;
+
+int canny_initial = 20;
+int acc_initial = 70;
+int acc_max = 200;
+int canny_max= 255;
+
+float w=10;        // actual width of the ring
+float f=600.98;   // foacl length of laptop cMERA 	IN 	pixels
+int main()
+{
+
+wiringPi.setup();
+int pin=4,j;
+softPwmCreate(pin,0,100)
+namedWindow( "aaa", WINDOW_NORMAL);
+//resizeWindow("aaa", 1000,1000);   	
+VideoCapture cap(1);
+vector<Vec3f> circles;
+//vector<Vec3f> temp;
+Mat src, src_gray,gray;
+
+createTrackbar("canny","aaa", &canny_initial,canny_max);
+createTrackbar("acc", "aaa", &acc_initial,acc_max);
+
+
+
+while (1)
+{
+
+  cap>>src;   //REad incoming frame
+
+  cvtColor( src,src_gray, COLOR_BGR2GRAY );  //Covert to BGR
+
+ GaussianBlur( src_gray, src_gray, Size(15, 15), 0, 0 );  //Remove noise in image
+  
+ // bilateralFilter ( src_gray, gray, 2, 10,10 );	
+ // medianBlur ( src_gray, gray, 11);
+
+//HOUGH CIRCLE TRANSFORM
+HoughCircles( src_gray, circles, HOUGH_GRADIENT, 1, src_gray.rows/8, canny_initial, acc_initial, 0, 0 );
+cout<<circles.size();
+
+
+
+
+
+line(src,Point(0,240),Point(640,240),Scalar(0,255,0),2,8);
+// TO traverse through all the circles found		
+  for( size_t i = 0; i < circles.size(); i++ )
+  {
+ 	// POint is predefined object
+      Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+	int radius = cvRound(circles[i][2]);
+         // Pixel width of the circle in realtime
+	int pixel=2*radius;
+	cout<<"The distance is:"<<(f*w)/pixel<<endl;   //triangular formula to find the distance between camera and object	
+	
+	int x_cord=center.x;
+	int y_cord=center.y;
+
+	//Predefined function to draw rectangle
+	rectangle(src,Point(center.x-radius,center.y-radius),Point(center.x+radius,center.y+radius),Scalar(255,0,0),2,8);
+	//cout<<radius<<endl;
+
+	if(y_cord<200)
+	{ cout<<"Go down"<<endl;
+	  for(j=0;j<100;j++)
+	  {
+		delay(100);
+		softPwmWrite(pin,j);
+	  }
+
+	}       // This will go to a aervo motor to adjust the camera
+	else if (y_cord>280)
+	{ cout<<"Go up"<<endl;
+	  for(j=100;j>0;j--)
+	  {
+		delay(100);
+		softPwmWrite(pin,j);
+	  }
+	
+
+	}
+	else
+	{ cout<<"Loop is in vision now"<<endl;}  // The servo motor will stop here 
+*/
+
+     // circle( src, center, 3, Scalar(0,255,0), -1, 8, 0 );
+     // circle( src, center, radius, Scalar(0,0,255), 3, 8, 0 );
+   }
+ 
+  imshow( "aaa", src );
+ 
+
+  		if(waitKey(30)=='q') break;
+}
+  return 0;
+}
