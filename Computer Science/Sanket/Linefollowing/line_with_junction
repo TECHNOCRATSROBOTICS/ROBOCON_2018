@@ -1,0 +1,293 @@
+// RX TX 1 are of the front wheels
+// RX TX 2 are of center base
+// Wheels pwm and dir are defined 
+
+
+#include "Arduino.h"
+
+const float Kp = 0.4; //0.3;//0.45;
+const float Kd = 30;   //18;//25;  
+
+const float setPoint = 35; //35
+const float baseSpeed = 90;
+const float maxSpeed = 255;
+unsigned int positionVal=0;
+unsigned int positionVal2=0;
+
+int stopBot();
+int moveForward();
+
+float rightMotorSpeed=90;
+float leftMotorSpeed=90;
+
+const byte rx1 = 19;
+const byte tx1 = 18;
+const byte e1 = 22;
+const byte j1 = 24;
+
+const byte rx2 = 17;    
+const byte tx2 = 16;    
+const byte e2 = 30;      // pin 26 not working on arduino
+const byte j2 = 28;    
+
+
+const byte dir1 = 9; // Right Forward
+const byte pwm1 = 8; // Right Forward
+const byte dir2 = 7; // Left Forward
+const byte pwm2 = 6; // Left Forward
+const byte dir3 = 3;  // Left Backward
+const byte pwm3 = 2;  // Left Backward
+const byte dir4 = 5;  // Right Backward
+const byte pwm4 = 4;  // Right Backward
+
+int juncNum=0;
+int throwZone=1;
+
+int turnRight( int );
+
+int turnLeft( int );
+
+int junc2=0;
+
+byte currState=0;
+byte prevState=0;
+
+
+
+void setup() {
+
+
+
+    // Begin Serial1 communication with baudrate 9600
+  Serial.begin(9600);
+  Serial1.begin(9600);
+  Serial2.begin(9600);
+  
+
+  pinMode(e2,OUTPUT);
+  pinMode(j2,INPUT);
+
+
+  
+  pinMode(e1,OUTPUT);
+  pinMode(j1,INPUT);
+  for(byte i=2;i<=9;i++) {
+    pinMode(i,OUTPUT);
+  }
+
+
+
+
+  digitalWrite(e2,HIGH);
+  digitalWrite(j2,LOW);
+  digitalWrite(e1,HIGH);
+  digitalWrite(j1,LOW);
+
+  digitalWrite(pwm1,LOW);
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm3,LOW);
+  digitalWrite(pwm4,LOW);
+  // State of DIR pins are depending on your physical connection
+  // if your robot behaves strangely, try changing thses two values
+  digitalWrite(dir1,HIGH);
+  digitalWrite(dir2,LOW);
+  digitalWrite(dir3,LOW);
+  digitalWrite(dir4,LOW);
+  delay(2000);
+
+
+}
+
+float lastError = 0;    // Declare a variable to store previous error
+
+void loop() {
+  
+
+
+    digitalWrite(e1,LOW);// Set e1 to LOW to request UART data   
+    digitalWrite(e1,LOW);// Set e1 to LOW to request UART data   
+                                                                                                                                  
+    
+    if(Serial1.available())   // Wait for data to be available
+     { positionVal = Serial1.read();}    // Read incoming data and store in variable positionVal
+
+    Serial.println(positionVal);
+
+    junc2= digitalRead(j1);
+
+    currState=junc2;
+
+    
+    
+    checkJunction();
+   // Serial.println(juncNum);
+    prevState=currState;
+
+    if(juncNum==throwZone){
+      stopBot();
+      moveBack();
+      
+      
+      exit(0);
+    }
+
+
+ 
+ 
+/*
+    if (junc2==1){ // If the forward lsa is on the junction....It will turn right
+      turnRight(100);
+      stopBot();
+      
+      while (true){
+
+        digitalWrite(e1,LOW);   // Set e1 to LOW to request UART data
+        if(Serial1.available())  // Wait for data to be available
+        { positionVal = Serial1.read();}    // Read incoming data and store in variable positionVal
+        //digitalWrite(e2,HIGH);    // Stop requesting for UART data
+        int junc1= digitalRead(j1);
+        
+        if(positionVal<30){ // If it turned too much right...It has to turn back a little bit
+          turnLeft(100);
+        }
+        else{
+          
+          if(positionVal>40){ // Else if it turned a litle bit left.... It has to turn more right
+            turnRight(100);
+          }
+          
+          else{
+            break;
+          }
+              
+        }
+      }
+
+
+    }
+    else 
+    {*/
+      moveForward();
+   // }
+
+   
+}
+
+     
+  
+
+
+int moveForward(){
+  digitalWrite(dir1,HIGH);
+  digitalWrite(dir2,LOW);
+  digitalWrite(dir3,LOW);
+  digitalWrite(dir4,LOW);
+ 
+  if(positionVal == 255) {
+    analogWrite(pwm1,0);
+    analogWrite(pwm2,0);
+    analogWrite(pwm3,0);
+    analogWrite(pwm4,0);
+  }
+
+
+  // Else if line detected, calculate the motor speed and apply
+  else {
+    float error = positionVal - setPoint;   // Calculate the deviation from position to the set point
+    float motorSpeed = Kp * error + Kd * (error - lastError);   // Applying formula of PID
+    lastError = error;    // Store current error as previous error for next iteration use
+
+    // Adjust the motor speed based on calculated value
+    // You might need to interchange the + and - sign if your robot move in opposite direction
+
+    leftMotorSpeed = baseSpeed + motorSpeed;
+    rightMotorSpeed = baseSpeed - motorSpeed;
+
+    // If the speed of motor exceed max speed, set the speed to max speed
+
+    if(rightMotorSpeed > maxSpeed) rightMotorSpeed = maxSpeed;
+    if(leftMotorSpeed > maxSpeed) leftMotorSpeed = maxSpeed;
+
+    // If the speed of motor is negative, set it to 0
+
+    if(rightMotorSpeed < 0) rightMotorSpeed = 0;
+    if(leftMotorSpeed < 0) leftMotorSpeed = 0;
+
+    //  Serial1.print(rightMotorSpeed);
+    //  Serial1.print(" ");
+    //  Serial1.println(leftMotorSpeed);
+    
+    analogWrite(pwm1,rightMotorSpeed);
+    analogWrite(pwm4,rightMotorSpeed);
+    analogWrite(pwm3,leftMotorSpeed);
+    analogWrite(pwm2,leftMotorSpeed);
+  }   
+  
+}
+
+
+int turnRight(int wheel_speed){
+    digitalWrite(dir1,LOW);//RF
+    digitalWrite(dir2,LOW);//LF
+    digitalWrite(dir3,LOW);//LB
+    digitalWrite(dir4,HIGH);//RB
+    delay(385); //r4 Set this delay and pwm speeds accordingly
+
+    // DElay is used to turn the bot for a specific period and then stop...This provides more accuracy rather than using the other lsa to turn the bot
+
+    analogWrite(pwm1,wheel_speed);
+    analogWrite(pwm2,wheel_speed);
+    analogWrite(pwm3,wheel_speed);
+    analogWrite(pwm4,wheel_speed);
+    delay(1000); 
+    // Try to keep speeds to its maximum to avoid wrong turns
+}
+
+int turnLeft(int wheel_speed){
+    digitalWrite(dir1,LOW);//RF
+    digitalWrite(dir2,LOW);//LF
+    digitalWrite(dir3,LOW);//LB
+    digitalWrite(dir4,HIGH);//RB
+    delay(385); // Set this delay and pwm speeds accordingly
+
+    // DElay is used to turn the bot for a specific period and then stop...This provides more accuracy rather than using the other lsa to turn the bot
+
+    analogWrite(pwm1,wheel_speed);
+    analogWrite(pwm2,wheel_speed);
+    analogWrite(pwm3,wheel_speed);
+    analogWrite(pwm4,wheel_speed);
+    //delay(1000); 
+    // Try to keep speeds to its maximum to avoid wrong turns
+}
+
+
+int stopBot(){
+
+  digitalWrite(pwm1,LOW);
+  digitalWrite(pwm2,LOW);
+  digitalWrite(pwm3,LOW);
+  digitalWrite(pwm4,LOW);
+  
+}
+
+void checkJunction(){
+
+ if (junc2==1){
+  if(currState==1 && prevState==0){
+    juncNum++;
+  }
+ }
+ else if(junc2==0){
+  if(currState==0 && prevState==1){
+    int x=1;              // do nothing
+  }
+  
+ }
+}
+
+
+
+
+    
+  
+  
