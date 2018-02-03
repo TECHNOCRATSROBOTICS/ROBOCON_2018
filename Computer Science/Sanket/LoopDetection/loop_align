@@ -1,0 +1,116 @@
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/imgcodecs.hpp"
+
+#include <iostream>
+#include<stdlib.h>
+#include <stdio.h>
+
+
+using namespace std;
+using namespace cv;
+
+int canny_initial = 20;
+int canny_max= 255;
+int acc_initial = 80;
+int acc_max = 200;
+
+
+float w=80;        // actual width of the ring
+float f=600.98;
+int beta=1;
+int alpha=0;   // foacl length of laptop cMERA 	IN 	pixels 
+
+int main()
+{
+
+
+namedWindow( "aaa", WINDOW_NORMAL);
+namedWindow( "bbb", WINDOW_NORMAL);
+namedWindow( "ccc", WINDOW_NORMAL);
+resizeWindow("aaa", 1000,1000);   	
+VideoCapture cap(0);
+vector<Vec3f> circles;
+//vector<Vec3f> temp;
+Mat src, src_gray,gray,canny;
+    Mat new_image = Mat::zeros( src.size(), src.type() );
+
+createTrackbar("canny","aaa", &canny_initial,canny_max);
+createTrackbar("acc", "aaa", &acc_initial,acc_max);
+createTrackbar("beta", "aaa", &beta,3);
+createTrackbar("aplha", "aaa", &alpha,100);
+
+int move = 0;
+
+while (1)
+{
+
+  cap>>src;   //REad incoming frame
+
+	for(int i=0;i<src.rows;i++){
+	for(int j=0;j<src.cols;j++){
+	for(int c=0;c<3;c++)
+	{src.at<Vec3b>(i,j)[c] =saturate_cast<uchar>( alpha*( src.at<Vec3b>(i,j)[c] ) + beta );}
+	}}
+  cvtColor( src,src_gray, COLOR_BGR2GRAY );  //Covert to BGR
+
+
+ GaussianBlur( src_gray, src_gray, Size(15, 15), 0, 0 );  //Remove noise in image
+	Canny( src_gray, canny,canny_initial,canny_initial*2, 3 );
+  
+ // bilateralFilter ( src_gray, gray, 2, 10,10 );	
+ // medianBlur ( src_gray, gray, 11);
+
+//HOUGH CIRCLE TRANSFORM
+HoughCircles( src_gray, circles, HOUGH_GRADIENT, 1, src_gray.rows/8, canny_initial, acc_initial, 0, 0 );
+//cout<<circles.size();
+
+
+
+
+
+line(src,Point(270,0),Point(270,480),Scalar(0,255,0),2,8);
+line(src,Point(370,0),Point(370,480),Scalar(0,255,0),2,8);
+// TO traverse through all the circles found		
+  for( size_t i = 0; i < circles.size(); i++ )
+  {
+ 	// POint is predefined object
+      Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+	int radius = cvRound(circles[i][2]);
+         // Pixel width of the circle in realtime
+	int pixel=2*radius;
+	//cout<<"The distance is:"<<(f*w)/pixel<<endl;   //triangular formula to find the distance between camera and object	
+	//cout<<pixel<<endl;
+	int x_cord=center.x;
+	int y_cord=center.y;
+	
+
+	//Predefined function to draw rectangle
+	//rectangle(src,Point(center.x-radius,center.y-radius),Point(center.x+radius,center.y+radius),Scalar(255,0,0),2,8);
+	//cout<<radius<<endl;
+
+   // THE FOLLOWING CODE PANDERS TO ADJUSTING CAMERA AS PER LOOP BEING IN ITS VISION
+	if(x_cord<270)
+	{ move = x_cord - 270;
+		cout<< move << endl;}       // This will go to a aervo motor to adjust the camera
+	else if (x_cord>370)
+	{ move = x_cord - 370;
+		cout << move << endl;}
+	else
+	{ move = 0;
+		cout << move << endl;}  // The servo motor will stop here 
+
+
+     // circle( src, center, 3, Scalar(0,255,0), -1, 8, 0 );
+      circle( src, center, radius, Scalar(0,0,255), 3, 8, 0 );
+   }
+ 
+  imshow( "aaa", src );
+	imshow("bbb",canny);
+//	imshow("ccc",new_image);
+ 
+
+  		if(waitKey(1)=='q') break;
+}
+  return 0;
+}
