@@ -1,0 +1,100 @@
+
+#include<SPI.h>
+#include<Pixy.h>
+#include <Servo.h>
+
+
+// Initialization of Pixy and servo objects
+uint16_t blocks;
+Pixy pixy;
+Servo myservo1;   // Left gripper
+Servo myservo2;   //Right gripper
+
+
+byte gripper_state=0;   // Gripper state where 0=open, 1=close
+
+
+/* Pneumatic MOSFET SETTING
+*  Pneumaic 1 --> m1 and m2
+*  Pneumatic 2 --> m3 and m4
+*/
+const byte m1=4;  
+const byte m2=7;
+const byte m3=2;
+const byte m4=8;
+
+void setup()
+{
+      pixy.init();             // initiate pixy
+      myservo1.attach(A0);
+      myservo2.attach(A2);     
+      pinMode(m1,OUTPUT);
+      pinMode(m2,OUTPUT);
+      pinMode(m3,OUTPUT);
+      pinMode(m4,OUTPUT);
+
+      digitalWrite(m1,LOW);
+      digitalWrite(m2,LOW);
+      digitalWrite(m3,LOW);
+      digitalWrite(m4,LOW); 
+    
+
+}
+
+void loop()
+{
+   blocks=pixy.getBlocks();   // Recieve input image from pixy 
+   if(blocks)                 // If blocks are available i.e any of the assigned colors are detected
+   {
+      delay(2000);
+      if(grip_state==0)
+      {
+        grip(myservo1);       // Gripper will close and hold the ball
+        delay(2000);
+        // Delay signifies 
+        ungrip(myservo2);
+        delay(1000);
+        shoot(m1,m2);
+        delay(1000);
+        reload(m1,m2);
+      }
+        
+   }
+}
+
+
+void grip(Servo x){
+    x.write(180);
+    delay(420);
+    x.write(90);  
+    grip_state=1;
+}
+
+void ungrip(Servo x){
+  x.write(0);
+  delay(420);
+  x.write(90);
+  grip_state=0;
+} 
+
+
+void shoot(const byte x,const byte y)
+{
+  digitalWrite(x,HIGH);
+  digitalWrite(y,LOW);
+  shoot_state=1;
+}
+
+void reload(const byte x,const byte y)
+{
+  digitalWrite(x,LOW);
+  digitalWrite(y,HIGH);
+  shoot_state=0;
+}
+
+void standby(const byte x, const byte y)
+{
+  digitalWrite(x,LOW);
+  digitalWrite(y,LOW);
+  
+}
