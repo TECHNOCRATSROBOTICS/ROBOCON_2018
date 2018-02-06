@@ -1,51 +1,70 @@
 
+
 #include<SPI.h>
 #include<Pixy.h>
 #include<Servo.h>
 
-int trigPin=9,echoPin=10; // trig to pin 9 and echo to pin 10
+
+// Ultrasonic module
+
+const byte trigPin=9;  // trig pin of ultrasonic
+const byte echoPin=10; // echo to pin 10
 float tme(int pulse); // returns time taken by sound to reach the ball
 bool Tz3(); // returns true if ball on the arm for Tz3
 float dist;// how far the ball is, used to run the counter
 float minDist,maxDist;//distance range acceptable to assume that ball for Tz3 has been transfered 
 
 
+// PIXY 
+Pixy pixy;                   // Pixy Object
+uint16_t blocks;  // Pixy blocks container
+bool Magenta_switch=false;  //becomes true when magenta is recieved
+bool IsGolden=false;        // Presence of golden ball, detected by ultrasonic
+int throwZone=0;           //Throwing Zone set by  pixy based on color of ball 
 
 
-
-
-Pixy pixy;
+//SERVO
 Servo myservo1;             // Left gripper
 Servo myservo2;             //Right gripper
+byte gripper_state=0;   // Gripper state where 0=open, 1=close
+
+
+
 //*  Pneumaic 1 --> m1 and m2
-bool Magenta_switch=false;  //becomes true when magenta is recieved
-int throwZone=0;
-int n=0;
-
-//variables and functions for zone selection and transfer
-
-// Initialization of Pixy and servo objects
-uint16_t blocks;
-const byte jPulse_pin=15;
-byte jPulse=0;
-bool IsGolden=false;
-
-bool throwComplete=0;
- 
+//   Pneumatic 2 --> m3 and m4 
 const byte m1=4;  
 const byte m2=7;
 const byte m3=2;
 const byte m4=8;
 
-int lsbPin = 12;//pin to communicate least significant bit
-int msbPin = 13;//pin to communicate most significant bit
+
+
+
+
+
+
+// Junction from LineFollowing
+const byte jPulse_pin=15; // Junction acknowledgement pin from Line following 
+byte jPulse=0;            // Junction acknowledgement
+
+
+
+// Throw to Linefollowing
+bool throwComplete=0;  // Throw Acknowledgement to Line following
+
+
+
+// Color to Line following
+int lsbPin = 12;      //LSB pin of pixy to Linefollowing 
+int msbPin = 13;      //MSB pin of pixy to line following
+
+
 int Zone(); // function to decide which zone to go to
-void Send(int n);//sends which zone is selected to the line following arduino
+void Send(int n);//sends which zone is selected to the line Following
 
 
 
 
-byte gripper_state=0;   // Gripper state where 0=open, 1=close
 
 void setup()
 {
@@ -71,16 +90,16 @@ void setup()
 void loop()
 {
  jPulse=digitalRead(jPulse_pin); 
-  n=Zone();
+  throwZone=Zone();
   IsGolden=Tz3();
   
-  if(n==1||n==2)
+  if(throwZone==1||throwZone==2)
   {
     if(gripper_state==0)
      { grip(myservo2);}
                 
   }
-  else if(n==3)
+  else if(throwZone==3)
   {
     if(gripper_state==0)
     { grip(myservo1); }
@@ -89,14 +108,14 @@ void loop()
   if(jPulse)
   {
     jPulse=0;
-    if(n==1||n==2)
+    if(throwZone==1||throwZone==2)
     {
       ungrip(myservo2);
       shoot(m3,m4);
       reload(m3,m4);
       throwComplete=1;
     }
-    else if(n==3)
+    else if(throwZone==3)
     {
       ungrip(myservo1);
       shoot(m1,m2);
@@ -122,19 +141,16 @@ int Zone()
       {
         if(Magenta_switch) // if magenta has already been given
         {
-          Serial.println("Zone 2");
           return 2; // go to zone 2 with this green ball
         }
         else
       {
-        Serial.println("Zone 1");
         return 1; // otherwise go to zone 1
       }
       }
       else if(pixy.blocks[0].signature == 2 && IsGolden==false) // when magenta ball is passed,
       {
         Magenta_switch=true; // make isMagenta as true and,
-        Serial.println("Zone 2");
         return 2;       // select to go to zone 2
       }
 
