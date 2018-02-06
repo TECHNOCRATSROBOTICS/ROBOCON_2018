@@ -1,5 +1,4 @@
 
-
 #include<SPI.h>
 #include<Pixy.h>
 #include<Servo.h>
@@ -15,13 +14,17 @@ float dist;// how far the ball is, used to run the counter
 float minDist,maxDist;//distance range acceptable to assume that ball for Tz3 has been transfered 
 
 
+
+
+
+
 // PIXY 
 Pixy pixy;                   // Pixy Object
 uint16_t blocks;  // Pixy blocks container
 bool Magenta_switch=false;  //becomes true when magenta is recieved
 bool IsGolden=false;        // Presence of golden ball, detected by ultrasonic
 int throwZone=0;           //Throwing Zone set by  pixy based on color of ball 
-
+const byte startpin=28;
 
 //SERVO
 Servo myservo1;             // Left gripper
@@ -44,19 +47,19 @@ const byte m4=8;
 
 
 // Junction from LineFollowing
-const byte jPulse_pin=15; // Junction acknowledgement pin from Line following 
-byte jPulse=0;            // Junction acknowledgement
+const byte stop_pin=32; // Junction acknowledgement pin from Line following 
+byte stoppin=0;            // Junction acknowledgement
 
 
 
 // Throw to Linefollowing
-bool throwComplete=0;  // Throw Acknowledgement to Line following
+const byte throwComplete=24;  // Throw Acknowledgement to Line following
 
 
 
 // Color to Line following
-int lsbPin = 12;      //LSB pin of pixy to Linefollowing 
-int msbPin = 13;      //MSB pin of pixy to line following
+int lsbPin = 25;      //LSB pin of pixy to Linefollowing 
+int msbPin = 34;      //MSB pin of pixy to line following
 
 
 int Zone(); // function to decide which zone to go to
@@ -84,14 +87,16 @@ void setup()
       digitalWrite(m3,LOW);
       digitalWrite(m4,LOW); 
     
-
 }
 
 void loop()
 {
- jPulse=digitalRead(jPulse_pin); 
-  throwZone=Zone();
+  stoppin=digitalRead(stop_pin); 
   IsGolden=Tz3();
+  throwZone=Zone();
+ 
+  sendZone(throwZone);
+  
   
   if(throwZone==1||throwZone==2)
   {
@@ -105,9 +110,9 @@ void loop()
     { grip(myservo1); }
     
   }
-  if(jPulse)
+  if(stoppin)
   {
-    jPulse=0;
+    stoppin=0;
     if(throwZone==1||throwZone==2)
     {
       ungrip(myservo2);
@@ -217,3 +222,30 @@ bool Tz3()
   return false;                       // else return false
    
 }
+
+void sendZone(int throwzone){
+  if(throwzone==1)
+  {
+    digitalWrite(lsbPin,HIGH);
+    digitalWrite(msbPin,LOW);
+  }
+  else if(throwzone==2)
+  {
+    digitalWrite(lsbPin,LOW);
+    digitalWrite(msbPin,HIGH);
+    
+  }
+  else
+  {
+    digitalWrite(lsbPin,HIGH);
+    digitalWrite(msbPin,HIGH);
+  }
+  
+}
+
+void sendThrow()
+{
+  digitalWrite(throwComplete,HIGH);
+}
+
+
