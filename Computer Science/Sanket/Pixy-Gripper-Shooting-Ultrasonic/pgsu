@@ -1,4 +1,3 @@
-
 #include<SPI.h>
 #include<Pixy.h>
 #include<Servo.h>
@@ -24,7 +23,7 @@ uint16_t blocks;  // Pixy blocks container
 bool Magenta_switch=false;  //becomes true when magenta is recieved
 bool IsGolden=false;        // Presence of golden ball, detected by ultrasonic
 int throwZone=0;           //Throwing Zone set by  pixy based on color of ball 
-const byte startpin=28;
+//const byte startpin=28;
 
 //SERVO
 Servo myservo1;             // Left gripper
@@ -53,7 +52,8 @@ byte stoppin=0;            // Junction acknowledgement
 
 
 // Throw to Linefollowing
-const byte throwComplete=24;  // Throw Acknowledgement to Line following
+const byte ackPin=24;  // Throw Acknowledgement to Line following
+byte ack=0;
 
 
 
@@ -80,7 +80,8 @@ void setup()
       pinMode(m4,OUTPUT);
       pinMode(lsbPin,OUTPUT);
       pinMode(msbPin,OUTPUT);
-      pinMode(jPulse_pin,INPUT);
+      pinMode(ackPin,OUTPUT);
+      pinMode(stop_pin,INPUT);
 
       digitalWrite(m1,LOW);
       digitalWrite(m2,LOW);
@@ -91,48 +92,75 @@ void setup()
 
 void loop()
 {
-  stoppin=digitalRead(stop_pin); 
-  IsGolden=Tz3();
-  throwZone=Zone();
- 
-  sendZone(throwZone);
+  ballSending();
+  readPins();
+  shoot();
+  
+  }
   
   
-  if(throwZone==1||throwZone==2)
-  {
-    if(gripper_state==0)
-     { grip(myservo2);}
-                
-  }
-  else if(throwZone==3)
-  {
-    if(gripper_state==0)
-    { grip(myservo1); }
-    
-  }
-  if(stoppin)
-  {
-    stoppin=0;
+
+
+
+void shoot(){
+  stoppin=0;
     if(throwZone==1||throwZone==2)
     {
       ungrip(myservo2);
       shoot(m3,m4);
       reload(m3,m4);
-      throwComplete=1;
+      sendAck();
+      resetPin();
+      
     }
     else if(throwZone==3)
     {
       ungrip(myservo1);
       shoot(m1,m2);
       reload(m1,m2);
-      throwComplete=1;
+      sendAck();
+      resetPin();
     }
+}
+  
+void ballSending(){
+  readBall();
+  if(throwZone==1||throwZone==2)
+  {
+    if(gripper_state==0){
+      grip(myservo2);
+      delay(4000);
+      sendZone(throwZone);
+     }
+                
   }
-  
-  
+  else if(throwZone==3)
+  {
+    if(gripper_state==0){
+      grip(myservo1); 
+      delay(4000);
+      sendZone(throwZone);
+      }
+    
+  }
 }
 
 
+void readPins(){
+  while(true){
+  stoppin=digitalRead(stop_pin);
+  ack = digitalRead(ackPin);
+  if(ack==1 || stoppin==1){
+    break;
+  }
+}
+}
+
+
+void readBall(){
+  IsGolden=Tz3();
+  throwZone=Zone();
+}
 
 
 int Zone()
@@ -142,7 +170,7 @@ int Zone()
   if(blocks)
   {
       //if the green ball's signature is detected
-      if(pixy.blocks[0].signature == 1 && IsGolden==false)
+      if(pixy.blocks[0].signature == 1)
       {
         if(Magenta_switch) // if magenta has already been given
         {
@@ -153,19 +181,22 @@ int Zone()
         return 1; // otherwise go to zone 1
       }
       }
-      else if(pixy.blocks[0].signature == 2 && IsGolden==false) // when magenta ball is passed,
+      else if(pixy.blocks[0].signature == 2) // when magenta ball is passed,
       {
         Magenta_switch=true; // make isMagenta as true and,
         return 2;       // select to go to zone 2
       }
 
-      else if(IsGolden==true)
-      {
-        return 3;
+      else{
+        return 0;
       }
-      else { return 0; }
       
   }
+  else if (IsGolden)
+  {
+    return 3;
+  }
+  
 }
 
 
@@ -235,7 +266,7 @@ void sendZone(int throwzone){
     digitalWrite(msbPin,HIGH);
     
   }
-  else
+  else if(throwzone==3)
   {
     digitalWrite(lsbPin,HIGH);
     digitalWrite(msbPin,HIGH);
@@ -243,9 +274,16 @@ void sendZone(int throwzone){
   
 }
 
-void sendThrow()
+void sendAck()
 {
-  digitalWrite(throwComplete,HIGH);
+  digitalWrite(ackPin,HIGH);
+}
+
+void resetPin()
+{
+  digitalWrite(lsbPin,LOW);
+  digitalWrite(msbPin,LOW);
+  digitalWrite(ackPin,LOW);
 }
 
 
