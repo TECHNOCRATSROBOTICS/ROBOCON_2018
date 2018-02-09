@@ -1,0 +1,331 @@
+#include<SPI.h>
+#include<Pixy.h>
+#include<Servo.h>
+#include <Stepper.h>
+
+//Analyszer-FeedBack Function
+int TZ1BallNum=0;
+int TZ2BallNum=0;
+int TZ3BallNum=0;
+
+
+// Ultrasonic module
+
+const byte trigPin=9;  // trig pin of ultrasonic
+const byte echoPin=10; // echo to pin 10
+float tme(int pulse); // returns time taken by sound to reach the ball
+bool Tz3(); // returns true if ball on the arm for Tz3
+float dist;// how far the ball is, used to run the counter
+float minDist,maxDist;//distance range acceptable to assume that ball for Tz3 has been transfered 
+
+
+
+//Stepper Module
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);  // PINS not fixed yet
+int ang=360;
+int angle=map(ang,0,360,0,200);
+int step_iterator;
+int revLutions=3;
+byte TZ1State=0;
+byte TZ2State=0;
+
+
+
+
+
+// PIXY 
+Pixy pixy;                   // Pixy Object
+uint16_t blocks;  // Pixy blocks container
+bool Magenta_switch=false;  //becomes true when magenta is recieved
+bool IsGolden=false;        // Presence of golden ball, detected by ultrasonic
+int throwZone=0;           //Throwing Zone set by  pixy based on color of ball 
+//const byte startpin=28;
+
+//SERVO
+Servo myservo1;             // Left gripper
+Servo myservo2;             //Right gripper
+byte gripper_state=0;   // Gripper state where 0=open, 1=close
+
+
+
+//*  Pneumaic 1 --> m1 and m2
+//   Pneumatic 2 --> m3 and m4 
+const byte m1=4;  
+const byte m2=7;
+const byte m3=2;
+const byte m4=8;
+
+
+
+
+
+
+
+// Junction from LineFollowing
+const byte stop_pin=32; // Junction acknowledgement pin from Line following 
+byte stoppin=0;            // Junction acknowledgement
+
+
+
+// Throw to Linefollowing
+const byte ackPin=24;  // Throw Acknowledgement to Line following
+byte ack=0;
+
+
+
+// Color to Line following
+int lsbPin = 25;      //LSB pin of pixy to Linefollowing 
+int msbPin = 34;      //MSB pin of pixy to line following
+
+
+int Zone(); // function to decide which zone to go to
+void Send(int n);//sends which zone is selected to the line Following
+
+
+
+
+
+void setup()
+{
+      pixy.init();             // initiate pixy
+      myservo1.attach(A0);
+      myservo2.attach(A2);
+      myStepper.setSpeed(100);     
+      pinMode(m1,OUTPUT);
+      pinMode(m2,OUTPUT);
+      pinMode(m3,OUTPUT);
+      pinMode(m4,OUTPUT);
+      pinMode(lsbPin,OUTPUT);
+      pinMode(msbPin,OUTPUT);
+      pinMode(ackPin,OUTPUT);
+      pinMode(stop_pin,INPUT);
+
+
+      digitalWrite(m1,LOW);
+      digitalWrite(m2,LOW);
+      digitalWrite(m3,LOW);
+      digitalWrite(m4,LOW); 
+    
+}
+
+void loop()
+{
+  ballSending();
+  readPins();
+  shoot();
+  
+  }
+  
+  
+
+
+
+void shoot(){
+  stoppin=0;
+    if(throwZone==1||throwZone==2)
+    {
+    //  ungrip(myservo2);
+      shoot(m3,m4);
+      reload(m3,m4);
+      sendAck();
+      resetPin();
+      
+    }
+    else if(throwZone==3)
+    {
+      //ungrip(myservo1);
+      shoot(m1,m2);
+      reload(m1,m2);
+      sendAck();
+      resetPin();
+    }
+}
+  
+void ballSending(){
+  readBall();
+  if(throwZone==1||throwZone==2)
+  {
+    if(gripper_state==0){
+      //grip(myservo2);
+      delay(4000);
+      sendZone(throwZone);
+     }
+                
+  }
+  else if(throwZone==3)
+  {
+    if(gripper_state==0){
+      //grip(myservo1); 
+      delay(4000);
+      sendZone(throwZone);
+      }
+    
+  }
+}
+
+
+void readPins(){
+  while(true){
+  stoppin=digitalRead(stop_pin);
+  ack = digitalRead(ackPin);
+  if(ack==1 || stoppin==1){
+    break;
+  }
+}
+}
+
+
+void readBall(){
+  IsGolden=Tz3();
+  throwZone=Zone();
+}
+
+
+int Zone()
+{
+    blocks=pixy.getBlocks(); //gets the blocks from pixy
+  //if blocks detected
+  if(blocks)
+  {
+      //if the green ball's signature is detected
+      if(pixy.blocks[0].signature == 1)
+      {
+        if(Magenta_switch) // if magenta has already been given
+        {
+          return 2; // go to zone 2 with this green ball
+        }
+        else
+      {
+        return 1; // otherwise go to zone 1
+      }
+      }
+      else if(pixy.blocks[0].signature == 2) // when magenta ball is passed,
+      {
+        Magenta_switch=true; // make isMagenta as true and,
+        return 2;       // select to go to zone 2
+      }
+
+      else{
+        return 0;
+      }
+      
+  }
+  else if (IsGolden)
+  {
+    return 3;
+  }
+  
+}
+
+
+void grip(Servo x){
+    x.write(180);
+    delay(420);
+    x.write(90);  
+    gripper_state=1;
+}
+
+void ungrip(Servo x){
+  x.write(0);
+  delay(420);
+  x.write(90);
+  gripper_state=0;
+} 
+
+
+void shoot(const byte x,const byte y)
+{
+  digitalWrite(x,HIGH);
+  digitalWrite(y,LOW);
+ 
+}
+
+void reload(const byte x,const byte y)
+{
+  digitalWrite(x,LOW);
+  digitalWrite(y,HIGH);
+ 
+}
+
+void standby(const byte x, const byte y)
+{
+  digitalWrite(x,LOW);
+  digitalWrite(y,LOW);
+  
+}
+
+float tme(int pulse){
+  digitalWrite(trigPin,HIGH);
+  delayMicroseconds(pulse);
+  digitalWrite(trigPin,LOW);
+  float pTime= pulseIn(echoPin,HIGH)/2;
+  return pTime;
+}
+
+
+bool Tz3()
+{  
+  dist=tme(10)/29;
+  if(minDist<= dist or dist <=maxDist)// if distance is in range 
+  return true;                        // return true
+  return false;                       // else return false
+   
+}
+
+void sendZone(int throwzone){
+  if(throwzone==1)
+  {
+    digitalWrite(lsbPin,HIGH);
+    digitalWrite(msbPin,LOW);
+    if(TZ1State==0)
+    clockwise();
+  }
+  else if(throwzone==2)
+  {
+    digitalWrite(lsbPin,LOW);
+    digitalWrite(msbPin,HIGH);
+    if(TZ2State==0)
+    anti();
+  }
+  else if(throwzone==3)
+  {
+    digitalWrite(lsbPin,HIGH);
+    digitalWrite(msbPin,HIGH);
+  }
+  
+}
+
+void sendAck()
+{
+  digitalWrite(ackPin,HIGH);
+}
+
+void resetPin()
+{
+  digitalWrite(lsbPin,LOW);
+  digitalWrite(msbPin,LOW);
+  digitalWrite(ackPin,LOW);
+}
+
+int clockwise()
+{
+  for(step_iterator=0;step_iterator<revLutions;step_iterator++)
+  {
+    Serial.println("clockwise");
+    myStepper.step(-angle);    
+  }
+  TZ1State=1;  
+}
+
+int anti()
+{
+  for(step_iterator=0;step_iterator<revLutions;step_iterator++)
+  {
+    Serial.println("anticlockwise");
+    myStepper.step(angle);
+  }
+  TZ2State=1;
+}
+
