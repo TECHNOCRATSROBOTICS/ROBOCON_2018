@@ -1,0 +1,68 @@
+import cv2
+import numpy as np
+import RPi.GPIO as gpio
+gpio.setmode(gpio.BOARD)
+
+
+#set pins 38 for GPIO output
+
+gpio.setup(38,gpio.OUT) #lsb(because 38<40)
+
+
+#initialize the pins and put them at LOW
+
+gpio.output(38,0)
+
+
+
+
+
+cap=cv2.VideoCapture(0)
+
+IsGreen=False
+IMagenta=False
+
+while(1):
+	_,frame=cap.read()
+	hsv_frame=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+	lowGreen=np.array([50,100,100])
+	upGreen=np.array([70,255,255])
+	maskGreen=cv2.inRange(hsv_frame,lowGreen,upGreen)
+	resGreen=cv2.bitwise_and(frame,frame,mask=maskGreen)
+	resGreen=cv2.cvtColor(resGreen,cv2.COLOR_BGR2GRAY)
+	
+	
+	lowMagenta=np.array([140,100,100])
+	upMagenta=np.array([160,255,255])
+	maskMagenta=cv2.inRange(hsv_frame,lowMagenta,upMagenta)
+	resMagenta=cv2.bitwise_and(frame,frame,mask=maskMagenta)
+	resMagenta=cv2.cvtColor(resMagenta,cv2.COLOR_BGR2GRAY)
+	
+	
+	
+	countGreen=0
+	for i in range(0,480):
+		if(resGreen[i][320]!=0):
+			countGreen=countGreen+1
+			
+	countMagenta=0
+	for i in range(0,480):
+		if(resMagenta[i][320]!=0):
+			countMagenta=countMagenta+1
+						
+	if(countGreen>=100):
+		IsGreen=True
+		gpio.output(38,1)
+	else:
+		IsGreen=False
+		gpio.output(38,0)	
+
+		
+			
+				
+	cv2.imshow("aaa",resGreen)
+	#cv2.imshow("bbb",resMagenta)
+	if cv2.waitKey(1) & 0xFF==ord('w'):
+		break
+cap.release()
+cv2.destroyAllWindows()		
