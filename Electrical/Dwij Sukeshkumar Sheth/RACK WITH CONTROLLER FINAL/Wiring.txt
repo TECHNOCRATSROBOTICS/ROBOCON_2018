@@ -1,0 +1,44 @@
+Uno-
+
+0,1-RX,TX FOR SERIAL COMMUNICATION
+2,3- Used by the PS2 Shield
+4-DIR Pin for rack and pinion Motor of transfer mechanism
+5-PWM pin for rack and pinion Motor of Transfer mechanism
+6,7,8,9,10,11,12,13-Connections for the Base Motors
+
+A0-Servo Data
+A1,A2- Extender Pneumatic control for transfer mechanism
+
+
+Mega-
+
+0,1-TX RX For Serial Communication
+2-Push Button For rack 1
+3-Push Button for rack 2
+4-Push Button for rack 3
+6 ,7 -Connections to cytron for rack motor 1			//Refer Point 6 Below and change Accordingly
+8 ,9 -Connections to cytron for rack motor 2
+10,11-Connections to cytron for rack motor 3
+12,13- Rack Lifting Pneumatic control
+23,25,27,29-Stepper motor control for rack 1
+31,33,35,37-Stepper motor control for rack 2
+39,41,43,45-Stepper motor control for rack 3
+
+
+
+Important Points to be noted:
+1.Power stepper using the Buck Convertors and not the 5V available on the arduino
+2.For Powering of the sharp ir and the push button use the 5V available on the arduino
+3.For the Push down use the pull down mode of operation 
+	a.For this connect one of the terminal of the Button to the 5V
+	b.Ground the Push Button using the 10k ohm (Pull-Down) Resistor
+	c.Take the signal from the resistance and button junction point and feed it into the arduino
+4.For sharp IR also we will be using a Pull-Down Configuration for increasing the efficiency
+	a.Here also connect the Vcc Pin to the 5V
+	b. Connect the Ground pin to the ground directly
+	c.Use a k resistor and connect it between the ground and the signal pin
+	d.Take output accress the resistor signal pin Junction and then feed it into the arduino
+5.If using 7805 Regulator to power up the steppers make sure the battery input voltage is greater then 7V else the Whole system will fail even though everything will seem to work
+6.Inthe Arduino that is currently mounted on the Manual Bot the 6th DigiTal Pin is not working so please take care of that
+7.For the PS2 Shiels the A1 pin is dedicated for the software interrupt so do not use that pin in the code else the status LED will not work and connection with controller will no be established
+
