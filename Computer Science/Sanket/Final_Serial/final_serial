@@ -4,9 +4,6 @@
 #include<Servo.h>
 
 
-int IRval0=0;
-int IRval1=0;
-int IRval2=0;
 /* Table for  Serial Communication 
  *  Sending
  *  A --> TZ1
@@ -28,12 +25,6 @@ const byte m2=7;
 const byte m3=2;
 const byte m4=8;
 
-/*
-bool TZ1Success=false;
-bool TZ2Success=false;
-bool
-*/
-
 
 //Stepper Module
 const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
@@ -50,31 +41,24 @@ byte TZ2State=0;
 
 // Sharp IR module
 #define sharpIR A4
-
 float distance, volts, average = 0;
 int ir_value=0;      //  1 for TZ1 or TZ2 , 2 for TZ3 , if 1 send to PI
 int count=0;
-
+int IRval0=0;
+int IRval1=0;
+int IRval2=0;
 
 
 // RASPI Communication
 const byte toPi=3;   // Recieve acknowledgement from Arduino
-
 const byte GreenfromPi=A5;  // Green ball signal to arduino
 const byte MagentafromPi=A3; // Magenta ball signal to Arduino
 bool IsGreen=false;   // flag variables
-bool IsMagenta=true;
+bool IsMagenta=false;
 bool MagentaSwitch=false;   // first occurence of magenta ball
-
 bool IsGolden=false;
-
 int ballVolt1=0;   // reading from PI
 int ballVolt2=0;
-
-
-// Pins for Serial Communication
-const byte tx=14;  
-const byte rx=15;
 
 
 
@@ -157,11 +141,11 @@ void DecideZone(){
     readDistance();  
     CalculateAvg();
             
-    if (average > 4.7 && average < 5.9)
+    if (average > 4.5 && average < 5.9)
     {IRval1++;}
     else if (average > 6.2 && average < 7.3)
     {IRval2++;}  
-    else if (average > 7.5 || average<4.8 )
+    else if (average > 7.5)
     {IRval0++;}
   }
   if(IRval1>30 && IRval2<10) { ir_value=1; }
@@ -203,25 +187,25 @@ void SendZone()
         if(MagentaSwitch) // if magenta has already been given
         {
           
-          Serial3.write('B');
+          Serial3.write(8);
      //     Serial.println("Magenta");
          
         }
         else
       {
-          Serial3.write('A');
+          Serial3.write(7);
        //   Serial.println("Green");
       }
       }
       else if(IsMagenta && ir_value==1) // when magenta ball is passed,
       {
           MagentaSwitch=true; // make isMagenta as true and,
-          Serial3.write('B');
+          Serial3.write(8);
         //  Serial.println("Magenta");
       }
       else
       {
-        Serial3.write('N');
+        Serial3.write(9);
       //  Serial.println("No ball");
       }
    //   Serial3.flush();
@@ -234,17 +218,16 @@ void WaitforJunction()
   {
   if(Serial3.available())
   {
-    char Jpulse='1';
+    int Jpulse=0;
     Jpulse=Serial3.read();
-    Serial.println('J');
-    if(Jpulse=='J')
+    Serial.println('j');
+    if(Jpulse==5)
     {
       break;
     }
   }
 }
 }
-
 
 void ShootBall()
 {
@@ -260,9 +243,7 @@ void ShootBall()
   delay(1000);
   reload(m2,m4);
  }
-
  Serial3.write('T');
-// Serial3.flush();
  resetAllFlags();
   
 
@@ -310,11 +291,9 @@ void standby(const byte x, const byte y)
   digitalWrite(y,LOW);
   
 }
-
 void resetAllFlags()
 {
   IsGreen=false;
   IsMagenta=false;
   IsGolden=false;
 }
-
