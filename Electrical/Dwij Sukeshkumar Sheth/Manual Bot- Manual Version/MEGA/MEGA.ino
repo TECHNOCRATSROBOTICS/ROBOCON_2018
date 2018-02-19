@@ -4,7 +4,7 @@ byte motorPin11 = 32; // Blue - 28BYJ48 pin 1
 	
 	byte motorPin13 = 36; // Yellow - 28BYJ48 pin 3
 	
-	byte motorPin14 = 38; // Orange - 28BYJ48 pin 4
+	byte motorPin14 = 40; // Orange - 28BYJ48 pin 4
 	
 	// Red - 28BYJ48 pin 5 (VCC)
 	void backward1();
