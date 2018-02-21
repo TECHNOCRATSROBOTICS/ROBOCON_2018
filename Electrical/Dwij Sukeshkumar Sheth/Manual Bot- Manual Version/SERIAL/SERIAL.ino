@@ -128,25 +128,25 @@ void loop()
 
       
       else if (Ps2_RIGHT == 0) {
-        Serial.write('H');
+        Serial.write('D');
         delay(200);
       }
 
       
       else if (Ps2_UP == 0) {
-        Serial.write('E');
+        Serial.write('A');
         delay(200);
       }
 
       
       else if (Ps2_DOWN == 0) {
-        Serial.write('F');
+        Serial.write('B');
         delay(200);
       }
 
       
       else if (Ps2_LEFT == 0) {
-        Serial.write('G');
+        Serial.write('C');
         delay(200);
       }
 
@@ -160,25 +160,25 @@ void loop()
         else if(Ps2_RIGHT2== 0)
         Serial.println("2--PS2_RIGHT2");*/
       else if (Ps2_CIRCLE == 0) {
-        Serial.write('D');
+        Serial.write('H');
         delay(200);
       }
 
       
       else if (Ps2_TRIANGLE == 0) {
-        Serial.write('A');
+        Serial.write('E');
         delay(200);
       }
 
       
       else if (Ps2_CROSS == 0) {
-        Serial.write('B');
+        Serial.write('F');
         delay(200);
       }
 
       
       else if (Ps2_SQUARE == 0) {
-        Serial.write('C');
+        Serial.write('G');
         delay(200);
       }
 
@@ -246,17 +246,17 @@ void loop()
   else if (Ps2_RIGHT == 0)
     m.moveMotor(65,65,65,65,0,0,255,255);
   else if (Ps2_UP == 0)
-    m.moveMotor(30, 30, 30, 30,0,0,255,255);
+    m.moveMotor(50, 50, 50, 50,0,0,255,255);
   else if (Ps2_DOWN == 0)
-    m.moveMotor(30,30,30,30,255,255,0,0);
-  else if(Ps2_CIRCLE==0)
-    m.moveMotor(50,50,50,50,0,0,0,0);
+    m.moveMotor(50,50,50,50,255,255,0,0);
+  else if(Ps2_CIRCLE==0)                        //right Docking
+    m.moveMotor(80,80,80,80,0,0,0,0);
   else if(Ps2_SQUARE==0)
-    m.moveMotor(50,50,50,50,255,255,255,255);
+    m.moveMotor(80,80,80,80,255,255,255,255);   //Left Docking
   else if(Ps2_CROSS==0)
-    m.moveMotor(30,30,30,30,255,0,0,255);
+    m.moveMotor(50,50,50,50,255,0,0,255);       //Fine Reverse
   else if(Ps2_TRIANGLE==0)
-    m.moveMotor(30,30, 30, 30, 0,255,255, 0);
+    m.moveMotor(50,50,50,50,0,255,255, 0);      //Fine Forward
   
   /*else if (Ps2_CROSS == 0)
   {
@@ -295,13 +295,13 @@ void loop()
   else if (Ps2_RIGHT2 == 0)
     t.backward();
   else if (pwmy > 50)
-    m.moveMotor(pwmy, pwmy-10, pwmy-10, pwmy, 0,255,255, 0); //0,0,255,255
+    m.moveMotor(pwmy, pwmy, pwmy, pwmy, 0,255,255, 0); //0,0,255,255
   else if (pwmy < -50)
-    m.moveMotor(-pwmy, -pwmy+10, -pwmy+10, -pwmy,255,0, 0, 255);
+    m.moveMotor(-pwmy, -pwmy, -pwmy, -pwmy,255,0, 0, 255);
   else if (pwmx > 30)
-    m.moveMotor(pwmx, pwmx-10, pwmx-10, pwmx,255,255,255,255);    
+    m.moveMotor(pwmx, pwmx, pwmx, pwmx,255,255,255,255);    
   else if (pwmx < -30)
-    m.moveMotor(-pwmx, -pwmx+10, -pwmx+10, -pwmx,0,0,0,0);
+    m.moveMotor(-pwmx, -pwmx, -pwmx, -pwmx,0,0,0,0);
   else
   {
     m.moveMotor(0, 0, 0, 0, 0, 0, 0, 0);
@@ -408,10 +408,10 @@ void grip()
 {
   myservo.attach(servo_pin);
   Serial.print("grip");
-  for(pos=45;pos<=135;pos++){
+  for(pos=36;pos<=135;pos++){
     
   myservo.write(pos);
-  delay(10);
+  delay(40);
   }
   myservo.detach();
   return;
@@ -421,7 +421,7 @@ void ungrip()
 {
   myservo.attach(servo_pin);
   Serial.print("Ungrip");
-  for(pos=135;pos>=45;pos--){
+  for(pos=135;pos>=35;pos--){
   myservo.write(pos);
   delay(10);
   }
