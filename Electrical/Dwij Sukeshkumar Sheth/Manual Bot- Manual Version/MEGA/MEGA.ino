@@ -4,7 +4,7 @@ byte motorPin12 = 34;                                                           
 
 byte motorPin13 = 36;                                                                  // Yellow - 28BYJ48 pin 3
 
-byte motorPin14 = 38;                                                                  // Orange - 28BYJ48 pin 4
+byte motorPin14 = 40;                                                                  // Orange - 28BYJ48 pin 4
 
 // Red    - 28BYJ48 pin 5 (VCC)
 void backward1();
@@ -13,13 +13,13 @@ int rackFlag = 0, servoFlag = 0;
 
 int underRackpin1 = 5, underRackpin2 = 52;
 
-byte motorPin21 = 22;                                                                   // Blue   - 28BYJ48 pin 1
+byte motorPin21 = 42;                                                                   // Blue   - 28BYJ48 pin 1
 
-byte motorPin22 = 24;                                                                   // Pink   - 28BYJ48 pin 2
+byte motorPin22 = 44;                                                                   // Pink   - 28BYJ48 pin 2
 
-byte motorPin23 = 26;                                                                  // Yellow - 28BYJ48 pin 3
+byte motorPin23 = 46;                                                                  // Yellow - 28BYJ48 pin 3
 
-byte motorPin24 = 28;                                                                  // Orange - 28BYJ48 pin 4
+byte motorPin24 = 48;                                                                  // Orange - 28BYJ48 pin 4
 
 // Red    - 28BYJ48 pin 5 (VCC)
 
@@ -148,7 +148,7 @@ void setup() {
 
   analogWrite(pwm1, 0);
 
-  pinMode(buttonPin1, INPUT);
+  pinMode(buttonPin1, OUTPUT);
 
   pinMode(motorPin21, OUTPUT);
 
@@ -187,7 +187,7 @@ void setup() {
   pinMode(buttonPin3, INPUT);
   pinMode(underRackpin1, OUTPUT);
   pinMode(underRackpin2, OUTPUT);
-
+  analogWrite(buttonPin1,0);
   Serial.begin(9600);
 
 }
@@ -831,6 +831,8 @@ void ccontract()
 }
 void stepper_1_open()
 {
+  analogWrite(buttonPin1,168);
+  count1=0;
   for ( ; ; ) {
 
     if ( count1 == 50 ) {
@@ -844,10 +846,12 @@ void stepper_1_open()
     count1++ ;
 
   }
+  analogWrite(buttonPin1,0);
 }
 void stepper_1_close()
 {
-  for ( ; ; ) {
+  analogWrite(buttonPin1,168);
+   for ( ; ; ) {
     if ( count1 == 100 ) {
       break ;
     }
@@ -857,9 +861,12 @@ void stepper_1_close()
     //Serial.println(count);
   }
   count1 = 0 ;
+  analogWrite(buttonPin1,0);
 }
 void stepper_2_open()
 {
+  analogWrite(buttonPin1,168);
+  count2=0;
   for ( ; ; ) {
 
     if ( count2 == 50 ) {
@@ -873,9 +880,11 @@ void stepper_2_open()
     count2++ ;
 
   }
+  analogWrite(buttonPin1,0);
 }
 void stepper_2_close()
 {
+  analogWrite(buttonPin1,168);
   for ( ; ; ) {
     if ( count2 == 100 ) {
       break ;
@@ -886,4 +895,5 @@ void stepper_2_close()
     //Serial.println(count);
   }
   count2 = 0 ;
+  analogWrite(buttonPin1,0);
 }
